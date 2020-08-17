@@ -2,62 +2,74 @@
 
 namespace JotForm;
 
-use ClientController\FormController;
-use ClientController\UserController;
+use Form;
+use Report;
+use Submission;
+use User;
+use Folder;
+use System;
 
 class JotForm
 {
     private string $baseURL;
     private $authToken;
+    private \RequestHandler $requestHandler;
+
     /**
-     * @var UserController\UserController
+     * @var User
      */
-    public UserController\UserController $user;
-    public FormController\FormController $form;
-    public \FolderController $folder;
+    public User $users;
+
+    /**
+     * @var Form
+     */
+    public Form $forms;
+
+    /**
+     * @var Folder
+     */
+    public Folder $folders;
+
+    /**
+     * @var Report
+     */
+    public Report $reports;
+
+    /**
+     * @var System
+     */
+    public System $systems;
+
+    /**
+     * @var Submission
+     */
+    public Submission $submissions;
 
     public function __construct($authToken)
     {
         $this->authToken = $authToken;
-        $this->baseURL = 'https://api.jotform.com'; //default
-        //instanciate controllers
-        $this->user = new UserController\UserController();
-        $this->form = new FormController\FormController();
-        $this->folder = new \FolderController();
+        $this->baseURL   = 'https://api.jotform.com';
+        $this->users   = new User($this);
+        $this->forms   = new Form($this);
+        $this->folders = new Folder($this);
+        $this->reports = new Report($this);
+        $this->systems = new System($this);
+        $this->submissions = new Submission($this);
+        $this->requestHandler = new \RequestHandler();
     }
 
-    /**
-     * @return UserController\UserController
-     */
-    public function getUser(): UserController\UserController
+    public function request($requestType, $endpoint, array $params = null)
     {
-        return $this->user;
+        return $this->requestHandler->executeHttpRequest($requestType, $this->baseURL.$endpoint, $params);
     }
-
-    /**
-     * @return FormController\FormController
-     */
-    public function getForm(): FormController\FormController
-    {
-        return $this->form;
-    }
-
-    /**
-     * @return \FolderController
-     */
-    public function getFolder(): \FolderController
-    {
-        return $this->folder;
-    }
-
-
     /**
      * @param string $baseURL
      */
+
     public function setBaseURL(string $baseURL): void
     {
         $this->baseURL = $baseURL;
-    }
+    }//end setBaseURL()
 
     /**
      * @return mixed

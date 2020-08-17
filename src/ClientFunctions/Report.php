@@ -1,8 +1,14 @@
 <?php
 
 
-class ReportController
+class Report
 {
+    private $client;
+
+    public function __construct($client)
+    {
+        $this->client = $client;
+    }
     public function getReport($reportId)
     {
         $requestHandler = new RequestHandler("GET", "report/{$reportId}");

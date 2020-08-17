@@ -1,12 +1,13 @@
 <?php
 
-namespace ClientController\FormController;
-
-use RequestHandler;
-use RequestType;
-
-class FormController
+class Form
 {
+    private $client;
+
+    public function __construct($client)
+    {
+        $this->client = $client;
+    }
     public function getForm(int $formId)
     {
         $requestHandler = new RequestHandler("GET", "form/{$formId}");
@@ -109,7 +110,7 @@ class FormController
         $requestHandler->executeHttpRequest();
     }
 
-    public function setFormProperties($formId, array $formProperties, RequestType $requestType)
+    public function setFormProperties($formId, array $formProperties, $requestType)
     {
         $requestHandler = new RequestHandler($requestType, "form/{$formId}/properties");
         $requestHandler->setBody($formProperties);

@@ -1,7 +1,7 @@
 <?php
 
 
-class FolderController
+class Folder extends AbstractClient
 {
     public function getFolder($folderId)
     {

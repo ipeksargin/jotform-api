@@ -1,11 +1,17 @@
 <?php
 
 
-class SubmissionController
+class Submission
 {
+    private $client;
+
+    public function __construct($client)
+    {
+        $this->client = $client;
+    }
     public function getSubmission($submissionId)
     {
-        $requestHandler = new RequestHandler("GET", "submission/{$submissionId}");
+        $requestHandler = new RequestHandler('GET', "submission/.{$submissionId}");
         $requestHandler->executeHttpRequest();
     }
 
