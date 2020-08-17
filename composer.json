@@ -1,0 +1,20 @@
+{
+    "name": "jotfrom/api",
+    "description": "jotform api php",
+    "type": "library",
+    "authors": [
+        {
+            "name": "ipeksargin",
+            "email": "ipek.srgn@gmail.com"
+        }
+    ],
+    "require": {
+        "squizlabs/php_codesniffer": "3.*",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "ClientController\\": "ClientController"
+        }
+    }
+}
