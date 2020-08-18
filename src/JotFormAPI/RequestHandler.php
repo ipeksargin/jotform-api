@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm;
+
 class RequestHandler
 {
     private array $header;

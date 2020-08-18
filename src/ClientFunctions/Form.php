@@ -4,103 +4,233 @@ namespace JotForm;
 
 class Form extends AbstractClient
 {
+    /**
+     * getForm Get form details.
+     * @param [integer][$formId]
+     * @return array Returns details like formId,status,creation dates etc.
+     */
     public function getForm(int $formId)
     {
-        $this->client->request("GET", "form/{$formId}");
+        return $this->client->request("GET", "form/{$formId}");
     }
 
+    /**
+     * getFormQuestions Get list of all questions in the form.
+     * @param [integer][$formId]
+     * @return array Returns question properties of form.
+     */
     public function getFormQuestions($formId)
     {
-        $this->client->request("GET", "form/{$formId}/questions");
+        return $this->client->request("GET", "form/{$formId}/questions");
     }
 
+    /**
+     * getFormQuestionDetails Get a specific question.
+     * @param [integer][$formId][$questionId]
+     * @return array Returns details like if question is required or valid.
+     */
     public function getFormQuestionDetail($formId, $questionId)
     {
-        $this->client->request("GET", "form/{$formId}/questions/$questionId");
+        return $this->client->request("GET", "form/{$formId}/questions/$questionId");
     }
 
-    public function createFormSubmission($formId, $createFormSubmissionDetail)
+    /**
+     * createFormSubmission Create a single form submission using API.
+     * @param [integer][$formId]
+     * @return array Returns details like submissionId and URL.
+     */
+    public function createFormSubmission($formId, array $submissionDetails)
     {
-        $this->client->request("POST", "form/{$formId}/submissions", $createFormSubmissionDetail);
+        $params = $this->client->assocArr($submissionDetails);
+        return $this->client->request("POST", "form/{$formId}/submissions");
     }
 
-    public function getFormSubmissions($formId, array $formSubmissionDetail)
+    /**
+     * createFormSubmission Create form submissions using API.
+     * @param [integer][$formId]
+     * @return array Returns details like submissionId and URL.
+     */
+    public function createFormSubmissions($formId, $createFormSubmissionDetail) //submissionDetail func
     {
-        $this->client->request("GET", "form/$formId/submissions", $formSubmissionDetail);
+        return $this->client->request("PUT", "form/{$formId}/submissions");
     }
 
+    /**
+     * getFormSubmission Get form submission.
+     * @param [integer][$formId]
+     * @return array Returns details like submissionId and URL.
+     */
+    public function getFormSubmissions($formId, $offset, $limit, $orderBy, $filter)
+    {
+        $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
+        return $this->client->request("GET", "form/$formId/submissions", $params);
+    }
+
+    /**
+     * getFormProperties Get all properties in form.
+     * @param [integer][$formId]
+     * @return array Returns details like width, style, expiration date etc.
+     */
     public function getFormProperties($formId)
     {
-        $this->client->request("GET", "form/{$formId}/properties");
+        return $this->client->request("GET", "form/{$formId}/properties");
     }
 
+    /**
+     * getFormPropertyDetail Get a specific property of the form.
+     * @param [integer][$formId][$propertyKey]
+     * @return array Returns given property key.
+     */
     public function getFormPropertyDetail($formId, $propertyKey)
     {
-        $this->client->request("GET", "form/{$formId}/properties/$propertyKey");
+        return $this->client->request("GET", "form/{$formId}/properties/$propertyKey");
     }
 
+    /**
+     * getFromFiles Get all files in form.
+     * @param [integer][$formId]
+     * @return array Returns file details like name,URL etc.
+     */
     public function getFormFiles($formId)
     {
-        $this->client->request("GET", "form/{$formId}/files");
+        return $this->client->request("GET", "form/{$formId}/files");
     }
 
+    /**
+     * createFormWebhook Create a new webhook in form.
+     * @param [integer][$formId]
+     * @return array Returns list of webhooks in form.
+     */
     public function createFormWebhook($formId, array $webhookURL)
     {
-        $this->client->request("POST", "form/{$formId}/webhooks", $webhookURL);
+        return $this->client->request("POST", "form/{$formId}/webhooks", $webhookURL);
     }
 
+    /**
+     * deleteFormWebhook Delete a specific webhook in form.
+     * @param [integer][$formId][$webhookId]
+     * @return array Returns remaining list of webhooks in form.
+     */
     public function deleteFormWebhook($formId, $webhookId)
     {
-        $this->client->request("DELETE", "form/{$formId}/webhooks/{$webhookId}");
+        return $this->client->request("DELETE", "form/{$formId}/webhooks/{$webhookId}");
     }
 
+    /**
+     * getFormWebhooks Get list of Webhooks in form.
+     * @param [integer][$formId]
+     * @return array Returns list of webhooks in form.
+     */
     public function getFormWebhooks($formId)
     {
-        $this->client->request("GET", "form/{$formId}/webhooks");
+        return $this->client->request("GET", "form/{$formId}/webhooks");
     }
 
+    /**
+     * getFormReports Get all reports of a form including excel, csv etc.
+     * @param [integer][$formId]
+     * @return array Returns list of reports in the form and report details like title.
+     */
     public function getFormReports($formId)
     {
-        $this->client->request("GET", "form/{$formId}/reports");
+        return $this->client->request("GET", "form/{$formId}/reports");
     }
 
-    public function createFormReport($formId, array $formDetails)
+    /**
+     * createFormReport Create a new report of a form.
+     * @param [integer][$formId]
+     * @param array [$reportDetails] contains report details like title, list type etc.
+     * @return array Returns report details and URL.
+     */
+    public function createFormReport($formId, array $reportDetails)
     {
-        $this->client->request("POST", "form/{$formId}/reports", $formDetails);
+        $report = $this->client->assocArr($reportDetails);
+        return $this->client->request("POST", "form/{$formId}/reports", $report);
     }
 
+    /**
+     * createFormQuestion Create a new question of a form.
+     * @param [integer][$formId]
+     * @return array Returns properties of new question.
+     */
     public function createFormQuestion($formId, array $questionDetail)
     {
-        $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
+        $question = $this->client->assocArr($questionDetail);
+        return $this->client->request("PUT", "form/{$formId}/questions", $question);
     }
 
+    /**
+     * deleteFromQuestion Delete a specific question in form.
+     * @param [integer][$formId]
+     * @param [integer] [$questionId]
+     * @return array Returns status of the request.
+     */
     public function deleteFormQuestion($formId, $questionId)
     {
-        $this->client->request("DELETE", "form/{$formId}/question/{$questionId}");
+        return $this->client->request("DELETE", "form/{$formId}/question/{$questionId}");
     }
 
-    public function editFromQuestion($formId, $questionId, $questionDetail)
+    /**
+     * editFormQuestion Add or edit a specific question in the form.
+     * @param [integer][$formId]
+     * @param [integer][$questionId]
+     * @param array $questionDetail contains question detail like text, name etc.
+     * @return array Returns status of the request.
+     */
+    public function editFromQuestion($formId, $questionId, array $questionDetail)
     {
-        $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
+        $question = $this->client->assocArr($questionDetail);
+        return $this->client->request("POST", "form/{$formId}/questions/$questionId", $question);
     }
 
+    /**
+     * setFormProperties Add or edit properties of a specific form.
+     * @param [integer][$formId]
+     * @return array Returns edited properties.
+     */
     public function setFormProperties($formId, array $formProperties)
     {
-        $this->client->request("GET", "form/{$formId}/properties", $formProperties);
+        $properties = $this->client->assocArr($formProperties);
+        return $this->client->request("POST", "form/{$formId}/properties", $properties);
     }
 
-    public function createForm($formDetail)
+    /**
+     * createForm Create a new form.
+     * @param
+     * @return array Returns new form.
+     */
+    public function createForm($formDetail) //formDetails func
     {
-        $this->client->request("POST", "user/forms", $formDetail);
+        return $this->client->request("POST", "user/forms");
     }
 
+    /**
+     * createForms Create multiple forms.
+     * @param
+     * @return array Returns new forms.
+     */
+    public function createForms($formDetail) //formDetails func
+    {
+        return $this->client->request("POST", "user/forms");
+    }
+
+    /**
+     * cloneForm Clone a specific form.
+     * @param [integer][$formId]
+     * @return array Returns status of the request.
+     */
     public function cloneForm($formId)
     {
-        $this->client->request("POST", "form/{$formId}/clone");
+        return $this->client->request("POST", "form/{$formId}/clone");
     }
 
+    /**
+     * deleteForm Delete a specific form.
+     * @param [integer][$formId]
+     * @return array Returns status of the request.
+     */
     public function deleteForm($formId)
     {
-        $this->client->request("DELETE", "form/{$formId}");
+        return $this->client->request("DELETE", "form/{$formId}");
     }
 }

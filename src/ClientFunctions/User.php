@@ -4,73 +4,160 @@ namespace JotForm;
 
 class User extends AbstractClient
 {
+    /**
+     * getUser Get user account details for this Jotform user.
+     * @param
+     * @return array Returns details like username, account type, email etc.
+     */
     public function getUser()
     {
-        $this->client->request("GET", "user");
+        return $this->client->request("GET", "user");
     }
 
+    /**
+     * getUsage Get number of submission received.
+     * @param
+     * @return array Returns details like submission count, payments, uploads etc.
+     */
     public function getUsage()
     {
-        $this->client->request("GET", "user/usage");
+        return $this->client->request("GET", "user/usage");
     }
 
+    /**
+     * getSubusers Get subuser account list.
+     * @param
+     * @return array Returns list of subusers and forms with access privileges.
+     */
     public function getSubusers()
     {
-        $this->client->request("GET", "user/subusers");
+        return $this->client->request("GET", "user/subusers");
     }
 
-    public function getForms(array $params)
+    /**
+     * getForms Get list of forms for this user.
+     * @param integer $offset
+     * @param integer $limit
+     * @param string $orderBy
+     * @param string $filter
+     * @return array Returns details like title, creation date etc.
+     */
+    public function getForms($offset, $limit, $orderBy, $filter)
     {
-        $this->client->request("GET", "user/forms", $params);
+        $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
+        return $this->client->request("GET", "user/forms", $params);
     }
 
-    public function getSubmissions(array $params)
+    /**
+     * getSubmissions Get list of submissions.
+     * @param integer $offset
+     * @param integer $limit
+     * @param string $orderBy
+     * @param string $filter
+     * @return array Returns details like title, creation date etc.
+     */
+    public function getSubmissions($offset, $limit, $orderBy, $filter)
     {
-        $this->client->request("GET", "user/submissions", $params);
+        $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
+        return $this->client->request("GET", "user/submissions", $params);
     }
 
+    /**
+     * getFolders Get list of folders for this account.
+     * @param
+     * @return array Returns details like name, owner etc.
+     */
     public function getFolders()
     {
-        $this->client->request("GET", "user/folders");
+        return $this->client->request("GET", "user/folders");
     }
 
+    /**
+     * getReports Get list of reports.
+     * @param
+     * @return array Returns reports including CSV, Excel, charts etc.
+     */
     public function getReports()
     {
-        $this->client->request("GET", "user/reports");
+        return $this->client->request("GET", "user/reports");
     }
 
+    /**
+     * getSettings Get settings for this account.
+     * @param
+     * @return array Returns account's time zone and language.
+     */
     public function getSettings()
     {
-        $this->client->request("GET", "user/settings");
+        return $this->client->request("GET", "user/settings");
     }
 
-    public function updateSettings(array $params)
+    /**
+     * updateSettings Update settings for account.
+     * @param array $params array of setting details like time zone or language.
+     * @return array Returns updated settings.
+     */
+    public function updateSettings(array $settingsParams)
     {
-        $this->client->request("POST", "user/settings", $params);
+        $settings = $this->client->assocArr($settingsParams);
+        return $this->client->request("POST", "user/settings", $settings);
     }
 
-    public function getHistory(array $historyDetail)
+    /**
+     * getHistory Get user activity.
+     * @param $action
+     * @param $date
+     * @param $sortBy
+     * @param string $startDate
+     * @param string $endDate
+     * @return array Returns updated settings.
+     */
+    public function getHistory($action, $date, $sortBy, $startDate, $endDate)
     {
-        $this->client->request("GET", "user/history", $historyDetail);
+        $params = $this->client->historyDetail($action, $date, $sortBy, $startDate, $endDate);
+        return $this->client->request("GET", "user/history", $params);
     }
 
-    public function userRegister(array $userDetail)
+    /**
+     * userRegister Register a new user.
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return array Returns new user's details.
+     */
+    public function userRegister($username, $password, $email)
     {
-        $this->client->request("POST", "user/register", $userDetail);
+        $params = $this->client->registerDetails($username, $password, $email);
+        return $this->client->request("POST", "user/register", $params);
     }
 
-    public function userLogin(array $userDetail)
+    /**
+     * userLogin Login user.
+     * @param array $userCredentials contains username, password, appName and accessType.
+     * @return array Returns status of request.
+     */
+    public function userLogin(array $userCredentials)
     {
-        $this->client->request("POST", "user/login", $userDetail);
+        $params = $this->client->assocArr($userCredentials);
+        return $this->client->request("POST", "user/login", $params);
     }
 
-    public function getUserLogout()
+    /**
+     * userLogout Logout user.
+     * @return array Returns status of request.
+     */
+    public function userLogout()
     {
-        $this->client->request("GET", "user/logout");
+        return $this->client->request("GET", "user/logout");
     }
 
+    /**
+     * createForm Create a new form.
+     * @param
+     * @return array Returns new form.
+     */
     public function createForm(array $formDetails)
     {
-        $this->client->request("POST", "user/forms", $formDetails);
+        $this->client->request("POST", "user/forms");
     }
 }

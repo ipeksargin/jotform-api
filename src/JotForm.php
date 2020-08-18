@@ -8,12 +8,13 @@ use JotForm\Submission;
 use JotForm\User;
 use JotForm\Folder;
 use JotForm\System;
+use JotForm\RequestHandler;
 
 class JotForm
 {
     private string $baseURL;
-    private $authToken;
-    private \RequestHandler $requestHandler;
+    private string $authToken;
+    private RequestHandler $requestHandler;
 
     /**
      * @var User
@@ -55,24 +56,48 @@ class JotForm
         $this->reports = new Report($this);
         $this->systems = new System($this);
         $this->submissions = new Submission($this);
-        $this->requestHandler = new \RequestHandler();
+        $this->requestHandler = new RequestHandler();
     }
 
-    public function request($requestType, $endpoint, array $params = null)
+    public function assocArr(array $details)
+    {
+        $newArr = array();
+        foreach ($details as $key => $value) {
+            $newArr[$key] = $value;
+        }
+        return $newArr;
+    }
+
+    public function registerDetails($username, $password, $email)
+    {
+        return $params = array($username, $password, $email);
+    }
+
+    public function historyDetail($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null)
+    {
+        return $params = array($action, $date, $sortBy, $startDate, $endDate);
+    }
+
+    public function filterOrder($offset = 0, $limit = 0, $orderBy = null, $filter = null)
+    {
+        return $params = array($offset, $limit, $orderBy, json_encode($filter));
+    }
+
+    public function request($requestType, $endpoint, $params = null)
     {
         return $this->requestHandler->executeHttpRequest($requestType, $this->baseURL.$endpoint, $params);
     }
+
     /**
      * @param string $baseURL
      */
-
-    public function setBaseURL(string $baseURL): void
+    public function setBaseURL(string $baseURL)
     {
         $this->baseURL = $baseURL;
-    }//end setBaseURL()
+    }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getAuthToken()
     {
@@ -80,9 +105,9 @@ class JotForm
     }
 
     /**
-     * @param mixed $authToken
+     * @param string $authToken
      */
-    public function setAuthToken($authToken): void
+    public function setAuthToken(string $authToken)
     {
         $this->authToken = $authToken;
     }
