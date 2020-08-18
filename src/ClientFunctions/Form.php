@@ -1,139 +1,106 @@
 <?php
 
-class Form
-{
-    private $client;
+namespace JotForm;
 
-    public function __construct($client)
-    {
-        $this->client = $client;
-    }
+class Form extends AbstractClient
+{
     public function getForm(int $formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}");
     }
 
     public function getFormQuestions($formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/questions");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/questions");
     }
 
     public function getFormQuestionDetail($formId, $questionId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/questions/$questionId");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/questions/$questionId");
     }
 
     public function createFormSubmission($formId, $createFormSubmissionDetail)
     {
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/submissions");
-        $requestHandler->setBody($createFormSubmissionDetail);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "form/{$formId}/submissions", $createFormSubmissionDetail);
     }
 
     public function getFormSubmissions($formId, array $formSubmissionDetail)
     {
-        $requestHandler = new RequestHandler("GET", "form/$formId/submissions");
-        $requestHandler->setURL($formSubmissionDetail);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/$formId/submissions", $formSubmissionDetail);
     }
 
     public function getFormProperties($formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/properties");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/properties");
     }
 
     public function getFormPropertyDetail($formId, $propertyKey)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/properties/$propertyKey");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/properties/$propertyKey");
     }
 
     public function getFormFiles($formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/files");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/files");
     }
 
     public function createFormWebhook($formId, array $webhookURL)
     {
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/webhooks");
-        $requestHandler->setBody($webhookURL);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "form/{$formId}/webhooks", $webhookURL);
     }
 
     public function deleteFormWebhook($formId, $webhookId)
     {
-        $requestHandler = new RequestHandler("DELETE", "form/{$formId}/webhooks/{$webhookId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("DELETE", "form/{$formId}/webhooks/{$webhookId}");
     }
 
     public function getFormWebhooks($formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/webhooks");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/webhooks");
     }
 
     public function getFormReports($formId)
     {
-        $requestHandler = new RequestHandler("GET", "form/{$formId}/reports");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/reports");
     }
 
     public function createFormReport($formId, array $formDetails)
     {
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/reports");
-        $requestHandler->setBody($formDetails);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "form/{$formId}/reports", $formDetails);
     }
 
     public function createFormQuestion($formId, array $questionDetail)
     {
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/questions");
-        $requestHandler->setBody($questionDetail);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
     }
 
     public function deleteFormQuestion($formId, $questionId)
     {
-        $requestHandler = new RequestHandler("DELETE", "form/{$formId}/question/{$questionId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("DELETE", "form/{$formId}/question/{$questionId}");
     }
 
     public function editFromQuestion($formId, $questionId, $questionDetail)
-    { //create ile aynı mı?
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/questions/$questionId");
-        $requestHandler->setBody($questionDetail);
-        $requestHandler->executeHttpRequest();
+    {
+        $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
     }
 
-    public function setFormProperties($formId, array $formProperties, $requestType)
+    public function setFormProperties($formId, array $formProperties)
     {
-        $requestHandler = new RequestHandler($requestType, "form/{$formId}/properties");
-        $requestHandler->setBody($formProperties);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "form/{$formId}/properties", $formProperties);
     }
 
     public function createForm($formDetail)
     {
-        $requestHandler = new RequestHandler("POST", "user/forms");
-        $requestHandler->setBody($formDetail);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "user/forms", $formDetail);
     }
 
     public function cloneForm($formId)
     {
-        $requestHandler = new RequestHandler("POST", "form/{$formId}/clone");
-        $requestHandler->setBody(array());
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "form/{$formId}/clone");
     }
 
     public function deleteForm($formId)
     {
-        $requestHandler = new RequestHandler("DELETE", "form/{$formId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("DELETE", "form/{$formId}");
     }
 }

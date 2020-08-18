@@ -1,6 +1,5 @@
 <?php
 
-
 class RequestHandler
 {
     private array $header;
@@ -14,7 +13,7 @@ class RequestHandler
         $header[$key] = $value;
     }
 
-    public function setURLParams(array $params, $endPoint)
+    private function setURLParams(array $params, $endPoint)
     {
         $end = $endPoint."?"; // /user?
         $url = null;
@@ -24,15 +23,14 @@ class RequestHandler
         return $end.$url;
     }
 
-    public function executeHttpRequest($requestType, $url, array $params)
+    public function executeHttpRequest($requestType, $url, array $params = null)
     {
         //run request curl
-        if ($requestType == "GET") {
-            $url=$this->setURLParams($params, $url);
-        }elseif ($requestType == "POST") {
+        if ($requestType === "GET") {
+            $url = $this->setURLParams($params, $url);
+        } elseif ($requestType == "POST") {
             $jsonData = json_encode($params);
         }
-
         return null;
     }
 }

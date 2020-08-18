@@ -1,30 +1,21 @@
 <?php
 
+namespace JotForm;
 
-class Submission
+class Submission extends AbstractClient
 {
-    private $client;
-
-    public function __construct($client)
-    {
-        $this->client = $client;
-    }
     public function getSubmission($submissionId)
     {
-        $requestHandler = new RequestHandler('GET', "submission/.{$submissionId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "submission/{$submissionId}");
     }
 
     public function deleteSubmission($submissionId)
     {
-        $requestHandler = new RequestHandler("DELETE", "submission/{$submissionId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("DELETE", "submission/{$submissionId}");
     }
 
     public function editSubmission($submissionId, array $submissionDetails)
     {
-        $requestHandler = new RequestHandler("POST", "submission/{$submissionId}");
-        $requestHandler->setBody($submissionDetails);
-        $requestHandler->executeHttpRequest();
+        $this->client->request("POST", "submission/{$submissionId}", $submissionDetails);
     }
 }

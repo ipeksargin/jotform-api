@@ -1,11 +1,11 @@
 <?php
 
+namespace JotForm;
 
 class Folder extends AbstractClient
 {
     public function getFolder($folderId)
     {
-        $requestHandler = new RequestHandler("GET", "folder/{$folderId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "folder/{$folderId}");
     }
 }

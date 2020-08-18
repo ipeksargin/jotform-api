@@ -1,17 +1,11 @@
 <?php
 
+namespace JotForm;
 
-class System
+class System extends AbstractClient
 {
-    private $client;
-
-    public function __construct($client)
-    {
-        $this->client = $client;
-    }
     public function getSystemPlan($planName)
     {
-        $requestHandler = new RequestHandler("GET", "system/plan/$planName");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "system/plan/{$planName}");
     }
 }

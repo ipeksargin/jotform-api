@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm;
+
 class User extends AbstractClient
 {
     public function getUser()

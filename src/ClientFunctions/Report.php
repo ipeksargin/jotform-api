@@ -1,23 +1,15 @@
 <?php
+namespace JotForm;
 
-
-class Report
+class Report extends AbstractClient
 {
-    private $client;
-
-    public function __construct($client)
-    {
-        $this->client = $client;
-    }
     public function getReport($reportId)
     {
-        $requestHandler = new RequestHandler("GET", "report/{$reportId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("GET", "report/{$reportId}");
     }
 
     public function deleteReport($reportId)
     {
-        $requestHandler = new RequestHandler("DELETE", "report/{$reportId}");
-        $requestHandler->executeHttpRequest();
+        $this->client->request("DELETE", "report/{$reportId}");
     }
 }

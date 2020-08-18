@@ -1,5 +1,6 @@
 <?php
 
+namespace JotForm;
 
 abstract class AbstractClient
 {

@@ -2,12 +2,12 @@
 
 namespace JotForm;
 
-use Form;
-use Report;
-use Submission;
-use User;
-use Folder;
-use System;
+use JotForm\Form;
+use JotForm\Report;
+use JotForm\Submission;
+use JotForm\User;
+use JotForm\Folder;
+use JotForm\System;
 
 class JotForm
 {
@@ -48,9 +48,9 @@ class JotForm
     public function __construct($authToken)
     {
         $this->authToken = $authToken;
-        $this->baseURL   = 'https://api.jotform.com';
-        $this->users   = new User($this);
-        $this->forms   = new Form($this);
+        $this->baseURL = 'https://api.jotform.com';
+        $this->users = new User($this);
+        $this->forms = new Form($this);
         $this->folders = new Folder($this);
         $this->reports = new Report($this);
         $this->systems = new System($this);
