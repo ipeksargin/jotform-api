@@ -1,6 +1,6 @@
 <?php
 
-namespace JotForm;
+namespace JotForm\ClientFunctions;
 
 class User extends AbstractClient
 {
@@ -11,7 +11,9 @@ class User extends AbstractClient
      */
     public function getUser()
     {
-        return $this->client->request("GET", "user");
+        $params = array();
+        $params["apiKey"] = "9c4a3c13ddcd7916e5214af277691ffb";
+        return $this->client->request("GET", "user", $params);
     }
 
     /**
@@ -99,8 +101,7 @@ class User extends AbstractClient
      */
     public function updateSettings(array $settingsParams)
     {
-        $settings = $this->client->assocArr($settingsParams);
-        return $this->client->request("POST", "user/settings", $settings);
+        return $this->client->request("POST", "user/settings", $settingsParams);
     }
 
     /**
@@ -138,8 +139,7 @@ class User extends AbstractClient
      */
     public function userLogin(array $userCredentials)
     {
-        $params = $this->client->assocArr($userCredentials);
-        return $this->client->request("POST", "user/login", $params);
+        return $this->client->request("POST", "user/login", $userCredentials);
     }
 
     /**
@@ -158,6 +158,6 @@ class User extends AbstractClient
      */
     public function createForm(array $formDetails)
     {
-        $this->client->request("POST", "user/forms");
+        return $this->client->request("POST", "user/forms");
     }
 }

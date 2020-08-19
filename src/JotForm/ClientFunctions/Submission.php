@@ -1,6 +1,6 @@
 <?php
 
-namespace JotForm;
+namespace JotForm\ClientFunctions;
 
 class Submission extends AbstractClient
 {
@@ -31,6 +31,6 @@ class Submission extends AbstractClient
      */
     public function editSubmission($submissionId, array $submissionDetails)
     {
-        return $this->client->request("POST", "submission/{$submissionId}");
+        return $this->client->request("POST", "submission/{$submissionId}", $submissionDetails);
     }
 }

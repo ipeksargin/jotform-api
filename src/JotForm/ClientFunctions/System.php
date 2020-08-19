@@ -1,6 +1,6 @@
 <?php
 
-namespace JotForm;
+namespace JotForm\ClientFunctions;
 
 class System extends AbstractClient
 {

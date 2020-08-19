@@ -1,5 +1,5 @@
 <?php
-namespace JotForm;
+namespace JotForm\ClientFunctions;
 
 class Report extends AbstractClient
 {

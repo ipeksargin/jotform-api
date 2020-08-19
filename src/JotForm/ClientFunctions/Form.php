@@ -1,6 +1,6 @@
 <?php
 
-namespace JotForm;
+namespace JotForm\ClientFunctions;
 
 class Form extends AbstractClient
 {
@@ -9,7 +9,7 @@ class Form extends AbstractClient
      * @param [integer][$formId]
      * @return array Returns details like formId,status,creation dates etc.
      */
-    public function getForm(int $formId)
+    public function getForm($formId)
     {
         return $this->client->request("GET", "form/{$formId}");
     }
@@ -41,8 +41,7 @@ class Form extends AbstractClient
      */
     public function createFormSubmission($formId, array $submissionDetails)
     {
-        $params = $this->client->assocArr($submissionDetails);
-        return $this->client->request("POST", "form/{$formId}/submissions");
+        return $this->client->request("POST", "form/{$formId}/submissions", $submissionDetails);
     }
 
     /**
@@ -50,9 +49,9 @@ class Form extends AbstractClient
      * @param [integer][$formId]
      * @return array Returns details like submissionId and URL.
      */
-    public function createFormSubmissions($formId, $createFormSubmissionDetail) //submissionDetail func
+    public function createFormSubmissions($formId, array $createFormSubmissionDetail) //submissionDetail func
     {
-        return $this->client->request("PUT", "form/{$formId}/submissions");
+        return $this->client->request("PUT", "form/{$formId}/submissions", $createFormSubmissionDetail);
     }
 
     /**
@@ -144,8 +143,7 @@ class Form extends AbstractClient
      */
     public function createFormReport($formId, array $reportDetails)
     {
-        $report = $this->client->assocArr($reportDetails);
-        return $this->client->request("POST", "form/{$formId}/reports", $report);
+        return $this->client->request("POST", "form/{$formId}/reports", $reportDetails);
     }
 
     /**
@@ -155,8 +153,7 @@ class Form extends AbstractClient
      */
     public function createFormQuestion($formId, array $questionDetail)
     {
-        $question = $this->client->assocArr($questionDetail);
-        return $this->client->request("PUT", "form/{$formId}/questions", $question);
+        return $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
     }
 
     /**
@@ -179,8 +176,7 @@ class Form extends AbstractClient
      */
     public function editFromQuestion($formId, $questionId, array $questionDetail)
     {
-        $question = $this->client->assocArr($questionDetail);
-        return $this->client->request("POST", "form/{$formId}/questions/$questionId", $question);
+        return $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
     }
 
     /**
@@ -190,8 +186,7 @@ class Form extends AbstractClient
      */
     public function setFormProperties($formId, array $formProperties)
     {
-        $properties = $this->client->assocArr($formProperties);
-        return $this->client->request("POST", "form/{$formId}/properties", $properties);
+        return $this->client->request("POST", "form/{$formId}/properties", $formProperties);
     }
 
     /**

@@ -2,70 +2,61 @@
 
 namespace JotForm;
 
-use JotForm\Form;
-use JotForm\Report;
-use JotForm\Submission;
-use JotForm\User;
-use JotForm\Folder;
-use JotForm\System;
-use JotForm\RequestHandler;
+use JotForm\ClientFunctions\Folder;
+use JotForm\ClientFunctions\Form;
+use JotForm\ClientFunctions\Report;
+use JotForm\ClientFunctions\Submission;
+use JotForm\ClientFunctions\System;
+use JotForm\ClientFunctions\User;
+use JotForm\JotFormAPI\RequestHandler;
 
 class JotForm
 {
-    private string $baseURL;
-    private string $authToken;
-    private RequestHandler $requestHandler;
+    private $baseURL;
+    private $apiKey;
+    private $requestHandler;
 
     /**
      * @var User
      */
-    public User $users;
+    public $users;
 
     /**
      * @var Form
      */
-    public Form $forms;
+    public $forms;
 
     /**
      * @var Folder
      */
-    public Folder $folders;
+    public $folders;
 
     /**
      * @var Report
      */
-    public Report $reports;
+    public $reports;
 
     /**
      * @var System
      */
-    public System $systems;
+    public $systems;
 
     /**
      * @var Submission
      */
-    public Submission $submissions;
+    public $submissions;
 
-    public function __construct($authToken)
+    public function __construct($apiKey)
     {
-        $this->authToken = $authToken;
-        $this->baseURL = 'https://api.jotform.com';
+        $this->apiKey = $apiKey;
+        $this->baseURL = 'https://api.jotform.com/';
         $this->users = new User($this);
         $this->forms = new Form($this);
         $this->folders = new Folder($this);
         $this->reports = new Report($this);
         $this->systems = new System($this);
         $this->submissions = new Submission($this);
-        $this->requestHandler = new RequestHandler();
-    }
-
-    public function assocArr(array $details)
-    {
-        $newArr = array();
-        foreach ($details as $key => $value) {
-            $newArr[$key] = $value;
-        }
-        return $newArr;
+        $this->requestHandler = new RequestHandler($apiKey);
     }
 
     public function registerDetails($username, $password, $email)
@@ -91,7 +82,7 @@ class JotForm
     /**
      * @param string $baseURL
      */
-    public function setBaseURL(string $baseURL)
+    public function setBaseURL($baseURL)
     {
         $this->baseURL = $baseURL;
     }
@@ -99,16 +90,16 @@ class JotForm
     /**
      * @return string
      */
-    public function getAuthToken()
+    public function getApiKey()
     {
-        return $this->authToken;
+        return $this->apiKey;
     }
 
     /**
-     * @param string $authToken
+     * @param string $apiKey
      */
-    public function setAuthToken(string $authToken)
+    public function setApiKey($apiKey)
     {
-        $this->authToken = $authToken;
+        $this->apiKey = $apiKey;
     }
 }
