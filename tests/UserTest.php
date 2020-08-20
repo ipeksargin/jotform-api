@@ -1,20 +1,24 @@
 <?php
 
+use JotForm\JotForm;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
-    public function testStub()
+    public function testGetUserWithCorrectCredentials()
     {
         // Create a stub for the SomeClass class.
-        $stub = $this->createMock(\JotForm\JotFormAPI\RequestHandler::class);
+        $requestHanlderStub = $this->createMock(\JotForm\JotFormAPI\RequestHandler::class);
+        $requestClient = $this->createMock(JotForm::class);
 
         // Configure the stub.
-        $stub->method("executeHttpRequest")
-            ->willReturn("username");
+        $requestHanlderStub->method("executeHttpRequest")
+            ->willThrowException(new \JotForm\Errors\AuthorizationException());
 
         // Calling $stub->doSomething() will now return
-        // 'foo'.
-        $this->assertEquals("username", $stub->executeHttpRequest("GET", "https://api.jotform.com/user"));
+        $this->assertEquals(
+            array("a","b"),
+            $requestClient->users->getUser()
+        );
     }
 }

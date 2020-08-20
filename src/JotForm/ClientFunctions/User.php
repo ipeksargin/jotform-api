@@ -11,9 +11,7 @@ class User extends AbstractClient
      */
     public function getUser()
     {
-        $params = array();
-        $params["apiKey"] = "9c4a3c13ddcd7916e5214af277691ffb";
-        return $this->client->request("GET", "user", $params);
+        return $this->client->request("GET", "user");
     }
 
     /**

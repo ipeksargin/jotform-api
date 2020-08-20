@@ -8,12 +8,20 @@ use JotForm\ClientFunctions\Report;
 use JotForm\ClientFunctions\Submission;
 use JotForm\ClientFunctions\System;
 use JotForm\ClientFunctions\User;
+use JotForm\Errors\AuthorizationException;
+use JotForm\Errors\BadGatewayException;
+use JotForm\Errors\BadRequestException;
+use JotForm\Errors\DefaultException;
+use JotForm\Errors\ForbiddenException;
+use JotForm\Errors\NotFoundException;
+use JotForm\Errors\NotImplementedException;
+use JotForm\Errors\ServerException;
+use JotForm\Errors\ServiceUnavailableException;
 use JotForm\JotFormAPI\RequestHandler;
 
 class JotForm
 {
     private $baseURL;
-    private $apiKey;
     private $requestHandler;
 
     /**
@@ -46,17 +54,21 @@ class JotForm
      */
     public $submissions;
 
-    public function __construct($apiKey)
+    public function __construct(RequestHandler $handler)
     {
-        $this->apiKey = $apiKey;
-        $this->baseURL = 'https://api.jotform.com/';
+        $this->baseURL = "https://api.jotform.com/";
         $this->users = new User($this);
         $this->forms = new Form($this);
         $this->folders = new Folder($this);
         $this->reports = new Report($this);
         $this->systems = new System($this);
         $this->submissions = new Submission($this);
-        $this->requestHandler = new RequestHandler($apiKey);
+        $this->requestHandler = $handler;
+    }
+
+    public static function create($apiKey)
+    {
+        return new JotForm(new RequestHandler($apiKey));
     }
 
     public function registerDetails($username, $password, $email)
@@ -74,9 +86,50 @@ class JotForm
         return $params = array($offset, $limit, $orderBy, json_encode($filter));
     }
 
-    public function request($requestType, $endpoint, $params = null)
+    public function request($requestType, $endpoint, $params = [])
     {
-        return $this->requestHandler->executeHttpRequest($requestType, $this->baseURL.$endpoint, $params);
+        $response = $this->requestHandler->executeHttpRequest($requestType, $this->baseURL . $endpoint, $params);
+        $this->exceptionHandling($response);
+        $responseBody = $response->getBody()->getContents();
+        return json_decode($responseBody);
+        //var_dump($response->getStatusCode());
+    }
+
+    public function exceptionHandling($response)
+    {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode != 200) {
+            switch ($statusCode) {
+                case 400:
+                    throw new BadRequestException("Bad request.", $statusCode);
+                    break;
+                case 401:
+                    throw new AuthorizationException("Invalid API key or unauthorized API call", $statusCode);
+                    break;
+                case 403:
+                    throw new ForbiddenException("Invalid API key or Unauthorized API call", $statusCode);
+                    break;
+                case 404:
+                    throw new NotFoundException($response["message"], $statusCode);
+                    break;
+                case 500:
+                    throw new ServerException("Internal server error.", $statusCode);
+                    break;
+                case 501:
+                    throw new NotImplementedException("Request method not supported.", $statusCode);
+                    break;
+                case 502:
+                    throw new BadGatewayException("Service is unavailable, rate limits etc exceeded!", $statusCode);
+                    break;
+                case 503:
+                    throw new ServiceUnavailableException("Service is unavailable or overloaded", $statusCode);
+                    break;
+
+                default:
+                    throw new DefaultException($response["info"], $statusCode);
+                    break;
+            }
+        }
     }
 
     /**
@@ -87,19 +140,4 @@ class JotForm
         $this->baseURL = $baseURL;
     }
 
-    /**
-     * @return string
-     */
-    public function getApiKey()
-    {
-        return $this->apiKey;
-    }
-
-    /**
-     * @param string $apiKey
-     */
-    public function setApiKey($apiKey)
-    {
-        $this->apiKey = $apiKey;
-    }
 }
