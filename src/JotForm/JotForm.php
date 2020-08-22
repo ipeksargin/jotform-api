@@ -2,6 +2,7 @@
 
 namespace JotForm;
 
+use GuzzleHttp\Client;
 use JotForm\ClientFunctions\Folder;
 use JotForm\ClientFunctions\Form;
 use JotForm\ClientFunctions\Report;
@@ -21,7 +22,7 @@ use JotForm\JotFormAPI\RequestHandler;
 
 class JotForm
 {
-    private $baseURL;
+    private static $baseURL;
     private $requestHandler;
 
     /**
@@ -54,9 +55,8 @@ class JotForm
      */
     public $submissions;
 
-    public function __construct(RequestHandler $handler)
+    public function __construct(RequestHandler $handler, string $baseURL = "https://api.jotform.com")
     {
-        $this->baseURL = "https://api.jotform.com/";
         $this->users = new User($this);
         $this->forms = new Form($this);
         $this->folders = new Folder($this);
@@ -64,11 +64,18 @@ class JotForm
         $this->systems = new System($this);
         $this->submissions = new Submission($this);
         $this->requestHandler = $handler;
+        $this->baseURL = $baseURL;
     }
 
-    public static function create($apiKey)
+    public static function create($apiKey, $baseURL = "https://api.jotform.com")
     {
-        return new JotForm(new RequestHandler($apiKey));
+        $client = new Client([
+            "base_uri" => $baseURL,
+            "headers" => [
+                "apiKey" => $apiKey,
+            ],
+        ]);
+        return new JotForm(new RequestHandler($client), $baseURL);
     }
 
     public function registerDetails($username, $password, $email)
@@ -88,14 +95,13 @@ class JotForm
 
     public function request($requestType, $endpoint, $params = [])
     {
-        $response = $this->requestHandler->executeHttpRequest($requestType, $this->baseURL . $endpoint, $params);
+        $response = $this->requestHandler->executeHttpRequest($requestType, $endpoint, $params);
         $this->exceptionHandling($response);
         $responseBody = $response->getBody()->getContents();
-        return json_decode($responseBody);
-        //var_dump($response->getStatusCode());
+        return \GuzzleHttp\json_decode($responseBody, true);
     }
 
-    public function exceptionHandling($response)
+    private function exceptionHandling($response)
     {
         $statusCode = $response->getStatusCode();
         if ($statusCode != 200) {
@@ -104,10 +110,10 @@ class JotForm
                     throw new BadRequestException("Bad request.", $statusCode);
                     break;
                 case 401:
-                    throw new AuthorizationException("Invalid API key or unauthorized API call", $statusCode);
+                    throw new AuthorizationException("Invalid API key or unauthorized API call.", $statusCode);
                     break;
                 case 403:
-                    throw new ForbiddenException("Invalid API key or Unauthorized API call", $statusCode);
+                    throw new ForbiddenException("Dont have access rights to the content.", $statusCode);
                     break;
                 case 404:
                     throw new NotFoundException($response["message"], $statusCode);
@@ -131,13 +137,4 @@ class JotForm
             }
         }
     }
-
-    /**
-     * @param string $baseURL
-     */
-    public function setBaseURL($baseURL)
-    {
-        $this->baseURL = $baseURL;
-    }
-
 }

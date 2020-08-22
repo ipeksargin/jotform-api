@@ -11,7 +11,8 @@ class Form extends AbstractClient
      */
     public function getForm($formId)
     {
-        return $this->client->request("GET", "form/{$formId}");
+        $response = $this->client->request("GET", "form/{$formId}");
+        return $response["content"];
     }
 
     /**
@@ -21,7 +22,8 @@ class Form extends AbstractClient
      */
     public function getFormQuestions($formId)
     {
-        return $this->client->request("GET", "form/{$formId}/questions");
+        $response = $this->client->request("GET", "form/{$formId}/questions");
+        return $response["content"];
     }
 
     /**
@@ -31,7 +33,8 @@ class Form extends AbstractClient
      */
     public function getFormQuestionDetail($formId, $questionId)
     {
-        return $this->client->request("GET", "form/{$formId}/questions/$questionId");
+        $response = $this->client->request("GET", "form/{$formId}/questions/$questionId");
+        return $response["content"];
     }
 
     /**
@@ -41,7 +44,8 @@ class Form extends AbstractClient
      */
     public function createFormSubmission($formId, array $submissionDetails)
     {
-        return $this->client->request("POST", "form/{$formId}/submissions", $submissionDetails);
+        $response = $this->client->request("POST", "form/{$formId}/submissions", $submissionDetails);
+        return $response["content"];
     }
 
     /**
@@ -51,7 +55,8 @@ class Form extends AbstractClient
      */
     public function createFormSubmissions($formId, array $createFormSubmissionDetail) //submissionDetail func
     {
-        return $this->client->request("PUT", "form/{$formId}/submissions", $createFormSubmissionDetail);
+        $response = $this->client->request("PUT", "form/{$formId}/submissions", $createFormSubmissionDetail);
+        return $response["content"];
     }
 
     /**
@@ -62,7 +67,8 @@ class Form extends AbstractClient
     public function getFormSubmissions($formId, $offset, $limit, $orderBy, $filter)
     {
         $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
-        return $this->client->request("GET", "form/$formId/submissions", $params);
+        $response = $this->client->request("GET", "form/$formId/submissions", $params);
+        return $response["content"];
     }
 
     /**
@@ -72,7 +78,8 @@ class Form extends AbstractClient
      */
     public function getFormProperties($formId)
     {
-        return $this->client->request("GET", "form/{$formId}/properties");
+        $response = $this->client->request("GET", "form/{$formId}/properties");
+        return $response["content"];
     }
 
     /**
@@ -82,7 +89,8 @@ class Form extends AbstractClient
      */
     public function getFormPropertyDetail($formId, $propertyKey)
     {
-        return $this->client->request("GET", "form/{$formId}/properties/$propertyKey");
+        $response = $this->client->request("GET", "form/{$formId}/properties/$propertyKey");
+        return $response["content"];
     }
 
     /**
@@ -92,7 +100,8 @@ class Form extends AbstractClient
      */
     public function getFormFiles($formId)
     {
-        return $this->client->request("GET", "form/{$formId}/files");
+        $response = $this->client->request("GET", "form/{$formId}/files");
+        return $response["content"];
     }
 
     /**
@@ -102,7 +111,8 @@ class Form extends AbstractClient
      */
     public function createFormWebhook($formId, array $webhookURL)
     {
-        return $this->client->request("POST", "form/{$formId}/webhooks", $webhookURL);
+        $response = $this->client->request("POST", "form/{$formId}/webhooks", $webhookURL);
+        return $response["content"];
     }
 
     /**
@@ -112,7 +122,8 @@ class Form extends AbstractClient
      */
     public function deleteFormWebhook($formId, $webhookId)
     {
-        return $this->client->request("DELETE", "form/{$formId}/webhooks/{$webhookId}");
+        $response = $this->client->request("DELETE", "form/{$formId}/webhooks/{$webhookId}");
+        return $response["content"];
     }
 
     /**
@@ -122,7 +133,8 @@ class Form extends AbstractClient
      */
     public function getFormWebhooks($formId)
     {
-        return $this->client->request("GET", "form/{$formId}/webhooks");
+        $response = $this->client->request("GET", "form/{$formId}/webhooks");
+        return $response["content"];
     }
 
     /**
@@ -132,7 +144,8 @@ class Form extends AbstractClient
      */
     public function getFormReports($formId)
     {
-        return $this->client->request("GET", "form/{$formId}/reports");
+        $response = $this->client->request("GET", "form/{$formId}/reports");
+        return $response["content"];
     }
 
     /**
@@ -143,7 +156,8 @@ class Form extends AbstractClient
      */
     public function createFormReport($formId, array $reportDetails)
     {
-        return $this->client->request("POST", "form/{$formId}/reports", $reportDetails);
+        $response = $this->client->request("POST", "form/{$formId}/reports", $reportDetails);
+        return $response["content"];
     }
 
     /**
@@ -153,7 +167,8 @@ class Form extends AbstractClient
      */
     public function createFormQuestion($formId, array $questionDetail)
     {
-        return $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
+        $response = $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
+        return $response["content"];
     }
 
     /**
@@ -164,7 +179,8 @@ class Form extends AbstractClient
      */
     public function deleteFormQuestion($formId, $questionId)
     {
-        return $this->client->request("DELETE", "form/{$formId}/question/{$questionId}");
+        $response = $this->client->request("DELETE", "form/{$formId}/question/{$questionId}");
+        return $response["content"];
     }
 
     /**
@@ -176,7 +192,8 @@ class Form extends AbstractClient
      */
     public function editFromQuestion($formId, $questionId, array $questionDetail)
     {
-        return $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
+        $response = $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
+        return $response["content"];
     }
 
     /**
@@ -186,7 +203,8 @@ class Form extends AbstractClient
      */
     public function setFormProperties($formId, array $formProperties)
     {
-        return $this->client->request("POST", "form/{$formId}/properties", $formProperties);
+        $response = $this->client->request("POST", "form/{$formId}/properties", $formProperties);
+        return $response["content"];
     }
 
     /**
@@ -196,7 +214,8 @@ class Form extends AbstractClient
      */
     public function createForm($formDetail) //formDetails func
     {
-        return $this->client->request("POST", "user/forms");
+        $response = $this->client->request("POST", "user/forms");
+        return $response["content"];
     }
 
     /**
@@ -206,7 +225,8 @@ class Form extends AbstractClient
      */
     public function createForms($formDetail) //formDetails func
     {
-        return $this->client->request("POST", "user/forms");
+        $response = $this->client->request("POST", "user/forms");
+        return $response["content"];
     }
 
     /**
@@ -216,7 +236,8 @@ class Form extends AbstractClient
      */
     public function cloneForm($formId)
     {
-        return $this->client->request("POST", "form/{$formId}/clone");
+        $response = $this->client->request("POST", "form/{$formId}/clone");
+        return $response["content"];
     }
 
     /**
@@ -226,6 +247,7 @@ class Form extends AbstractClient
      */
     public function deleteForm($formId)
     {
-        return $this->client->request("DELETE", "form/{$formId}");
+        $response = $this->client->request("DELETE", "form/{$formId}");
+        return $response["content"];
     }
 }

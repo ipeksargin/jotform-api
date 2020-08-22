@@ -11,4 +11,9 @@ abstract class AbstractClient
     {
         $this->client = $client;
     }
+
+    protected function getBodyContent($response)
+    {
+        return $response["content"];
+    }
 }

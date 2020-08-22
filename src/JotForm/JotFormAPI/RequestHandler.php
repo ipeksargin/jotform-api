@@ -3,43 +3,34 @@
 namespace JotForm\JotFormAPI;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
 
 class RequestHandler
 {
-    private $header;
+    private $client;
 
-    public function __construct($apiKey)
+    public function __construct(Client $client)
     {
-        $this->header = array();
-        $this->header["apiKey"] = $apiKey;
-    }
-
-    public function addHeader($key, $value)
-    {
-        $header[$key] = $value;
-    }
-
-    private function setURLParams($params = [], $endPoint = "")
-    {
-        $end = $endPoint . "?"; // /user?
-        $url = null;
-        foreach ($params as $key => $value) {
-            $url = $key . "=" . $value . "&"; //key=value&
-        }
-        return $end . $url;
+        $this->client = $client;
     }
 
     public function executeHttpRequest($requestType, $url, $params = [])
     {
-        $client = new Client([]);
+        $options = [];
 
-        if ($requestType === "GET") {
-            $url = $this->setURLParams($params, $url);
-            $request = new Request($requestType, $url, $this->header);
-        } else {
-            $request = new Request($requestType, $url, $this->header, json_encode($params));
+        if (!empty($params)) {
+            if ($requestType === "GET") {
+                $options = ["query" => $params];
+            } else {
+                $options = ["form_params" => $params];
+            }
         }
-        return $client->send($request);
+
+        try {
+            $request = $this->client->request($requestType, $url, $options);
+        } catch (\Throwable $th) {
+            var_dump($th->getMessage());
+            die;
+        }
+        return $request;
     }
 }

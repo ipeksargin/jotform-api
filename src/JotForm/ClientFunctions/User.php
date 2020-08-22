@@ -11,7 +11,8 @@ class User extends AbstractClient
      */
     public function getUser()
     {
-        return $this->client->request("GET", "user");
+        $response = $this->client->request("GET", "user");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -21,7 +22,8 @@ class User extends AbstractClient
      */
     public function getUsage()
     {
-        return $this->client->request("GET", "user/usage");
+        $response = $this->client->request("GET", "user/usage");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -31,7 +33,8 @@ class User extends AbstractClient
      */
     public function getSubusers()
     {
-        return $this->client->request("GET", "user/subusers");
+        $response = $this->client->request("GET", "user/subusers");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -45,7 +48,8 @@ class User extends AbstractClient
     public function getForms($offset, $limit, $orderBy, $filter)
     {
         $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
-        return $this->client->request("GET", "user/forms", $params);
+        $response =  $this->client->request("GET", "user/forms", $params);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -59,7 +63,8 @@ class User extends AbstractClient
     public function getSubmissions($offset, $limit, $orderBy, $filter)
     {
         $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
-        return $this->client->request("GET", "user/submissions", $params);
+        $response = $this->client->request("GET", "user/submissions", $params);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -69,7 +74,8 @@ class User extends AbstractClient
      */
     public function getFolders()
     {
-        return $this->client->request("GET", "user/folders");
+        $response = $this->client->request("GET", "user/folders");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -79,7 +85,8 @@ class User extends AbstractClient
      */
     public function getReports()
     {
-        return $this->client->request("GET", "user/reports");
+        $response = $this->client->request("GET", "user/reports");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -89,7 +96,8 @@ class User extends AbstractClient
      */
     public function getSettings()
     {
-        return $this->client->request("GET", "user/settings");
+        $response = $this->client->request("GET", "user/settings");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -99,7 +107,8 @@ class User extends AbstractClient
      */
     public function updateSettings(array $settingsParams)
     {
-        return $this->client->request("POST", "user/settings", $settingsParams);
+        $response = $this->client->request("POST", "user/settings", $settingsParams);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -114,7 +123,8 @@ class User extends AbstractClient
     public function getHistory($action, $date, $sortBy, $startDate, $endDate)
     {
         $params = $this->client->historyDetail($action, $date, $sortBy, $startDate, $endDate);
-        return $this->client->request("GET", "user/history", $params);
+        $response = $this->client->request("GET", "user/history", $params);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -127,7 +137,8 @@ class User extends AbstractClient
     public function userRegister($username, $password, $email)
     {
         $params = $this->client->registerDetails($username, $password, $email);
-        return $this->client->request("POST", "user/register", $params);
+        $response = $this->client->request("POST", "user/register", $params);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -137,7 +148,8 @@ class User extends AbstractClient
      */
     public function userLogin(array $userCredentials)
     {
-        return $this->client->request("POST", "user/login", $userCredentials);
+        $response = $this->client->request("POST", "user/login", $userCredentials);
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -146,7 +158,8 @@ class User extends AbstractClient
      */
     public function userLogout()
     {
-        return $this->client->request("GET", "user/logout");
+        $response = $this->client->request("GET", "user/logout");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -156,6 +169,7 @@ class User extends AbstractClient
      */
     public function createForm(array $formDetails)
     {
-        return $this->client->request("POST", "user/forms");
+        $response = $this->client->request("POST", "user/forms");
+        return $this->getBodyContent($response);
     }
 }

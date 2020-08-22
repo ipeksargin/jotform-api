@@ -11,6 +11,7 @@ class System extends AbstractClient
      */
     public function getSystemPlan($planName)
     {
-        return $this->client->request("GET", "system/plan/{$planName}");
+        $response = $this->client->request("GET", "system/plan/{$planName}");
+        return $this->getBodyContent($response);
     }
 }

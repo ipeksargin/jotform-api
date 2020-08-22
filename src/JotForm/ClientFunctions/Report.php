@@ -10,7 +10,8 @@ class Report extends AbstractClient
      */
     public function getReport($reportId)
     {
-        return $this->client->request("GET", "report/{$reportId}");
+        $response =  $this->client->request("GET", "/report/{$reportId}");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -20,6 +21,7 @@ class Report extends AbstractClient
      */
     public function deleteReport($reportId)
     {
-        return $this->client->request("DELETE", "report/{$reportId}");
+        $response =  $this->client->request("DELETE", "report/{$reportId}");
+        return $this->getBodyContent($response);
     }
 }

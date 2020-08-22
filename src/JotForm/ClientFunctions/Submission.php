@@ -11,7 +11,8 @@ class Submission extends AbstractClient
      */
     public function getSubmission($submissionId)
     {
-        return $this->client->request("GET", "submission/{$submissionId}");
+        $response =  $this->client->request("GET", "submission/{$submissionId}");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -21,7 +22,8 @@ class Submission extends AbstractClient
      */
     public function deleteSubmission($submissionId)
     {
-        return $this->client->request("DELETE", "submission/{$submissionId}");
+        $response =  $this->client->request("DELETE", "submission/{$submissionId}");
+        return $this->getBodyContent($response);
     }
 
     /**
@@ -31,6 +33,7 @@ class Submission extends AbstractClient
      */
     public function editSubmission($submissionId, array $submissionDetails)
     {
-        return $this->client->request("POST", "submission/{$submissionId}", $submissionDetails);
+        $response = $this->client->request("POST", "submission/{$submissionId}", $submissionDetails);
+        return $this->getBodyContent($response);
     }
 }

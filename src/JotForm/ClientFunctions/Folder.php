@@ -11,6 +11,7 @@ class Folder extends AbstractClient
      */
     public function getFolder($folderId)
     {
-        return $this->client->request("GET", "folder/{$folderId}");
+        $response =  $this->client->request("GET", "folder/{$folderId}");
+        return $this->getBodyContent($response);
     }
 }
