@@ -3,16 +3,34 @@
 namespace JotForm\JotFormAPI;
 
 use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class RequestHandler
+ * @package JotForm\JotFormAPI
+ */
 class RequestHandler
 {
+    /**
+     * @var Client
+     */
     private $client;
 
+    /**
+     * RequestHandler constructor.
+     * @param Client $client
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
 
+    /**
+     * @param string $requestType
+     * @param string $url
+     * @param array $params
+     * @return ResponseInterface
+     */
     public function executeHttpRequest($requestType, $url, $params = [])
     {
         $options = [];
@@ -25,12 +43,7 @@ class RequestHandler
             }
         }
 
-        try {
-            $request = $this->client->request($requestType, $url, $options);
-        } catch (\Throwable $th) {
-            var_dump($th->getMessage());
-            die;
-        }
+        $request = $this->client->request($requestType, $url, $options);
         return $request;
     }
 }
