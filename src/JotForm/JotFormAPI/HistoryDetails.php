@@ -31,23 +31,30 @@ class HistoryDetails
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->sortBy = $sortBy;
-        $this->checkEnumsAreValid($action, $date, $sortBy);
+        $this->checkActionEnumsAreValid($action);
+        $this->checkDateEnumsAreValid($date);
+        $this->checkSortEnumsAreValid($sortBy);
     }
 
-    public function checkEnumsAreValid($action, $date, $sortBy)
+    public function checkActionEnumsAreValid($action)
     {
         $enumAction = ["all" => true, "userCreation" => true, "userLogin" => true,
             "formCreation" => true, "formUpdate" => true, "formDelete" => true, "formPurge" => true];
         if (!$enumAction[$action]) {
             throw new Exception("Invalid action property Exception");
         }
-
+    }
+    public function checkDateEnumsAreValid($date)
+    {
         $enumDate = ["all" => true, "lastWeek" => true, "lastMonth" => true, "lastYear" => true,
             "last3Months" => true, "last6Months" => true];
         if (!$enumDate[$date]) {
             throw new Exception("Invalid date property Exception");
         }
+    }
 
+    public function checkSortEnumsAreValid($sortBy)
+    {
         $enumSort = ["ASC" => true, "DESC" => true];
         if (!$enumSort[$sortBy]) {
             throw new Exception("Invalid sortBy property Exception");
