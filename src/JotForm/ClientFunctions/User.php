@@ -2,10 +2,19 @@
 
 namespace JotForm\ClientFunctions;
 
+use JotForm\JotFormAPI\FormDetails;
+use JotForm\JotFormAPI\HistoryDetails;
+use JotForm\JotFormAPI\SubmissionDetails;
+use JotForm\JotFormAPI\UserDetails;
+
+/**
+ * Class User
+ * @package JotForm\ClientFunctions
+ */
 class User extends AbstractClient
 {
     /**
-     * getUser Get user account details for this Jotform user.
+     * summary getUser Get user account details for this Jotform user.
      * @param
      * @return array Returns details like username, account type, email etc.
      */
@@ -45,10 +54,9 @@ class User extends AbstractClient
      * @param string $filter
      * @return array Returns details like title, creation date etc.
      */
-    public function getForms($offset, $limit, $orderBy, $filter)
+    public function getForms(SubmissionDetails $submissionDetails)
     {
-        $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
-        $response =  $this->client->request("GET", "user/forms", $params);
+        $response =  $this->client->request("GET", "user/forms", $submissionDetails->toArray());
         return $this->getBodyContent($response);
     }
 
@@ -60,10 +68,9 @@ class User extends AbstractClient
      * @param string $filter
      * @return array Returns details like title, creation date etc.
      */
-    public function getSubmissions($offset, $limit, $orderBy, $filter)
+    public function getSubmissions(SubmissionDetails $submissionDetails)
     {
-        $params = $this->client->filterOrder($offset, $limit, $orderBy, $filter);
-        $response = $this->client->request("GET", "user/submissions", $params);
+        $response = $this->client->request("GET", "user/submissions", $submissionDetails->toArray());
         return $this->getBodyContent($response);
     }
 
@@ -105,9 +112,9 @@ class User extends AbstractClient
      * @param array $params array of setting details like time zone or language.
      * @return array Returns updated settings.
      */
-    public function updateSettings(array $settingsParams)
+    public function updateSettings(array $params)
     {
-        $response = $this->client->request("POST", "user/settings", $settingsParams);
+        $response = $this->client->request("POST", "user/settings", $params);
         return $this->getBodyContent($response);
     }
 
@@ -120,35 +127,31 @@ class User extends AbstractClient
      * @param string $endDate
      * @return array Returns updated settings.
      */
-    public function getHistory($action, $date, $sortBy, $startDate, $endDate)
+    public function getHistory(HistoryDetails $historyDetails)
     {
-        $params = $this->client->historyDetail($action, $date, $sortBy, $startDate, $endDate);
-        $response = $this->client->request("GET", "user/history", $params);
+        $response = $this->client->request("GET", "user/history", $historyDetails->toArray());
         return $this->getBodyContent($response);
     }
 
     /**
      * userRegister Register a new user.
-     * @param string $username
-     * @param string $password
-     * @param string $email
+     * @param UserDetails $userDetails
      * @return array Returns new user's details.
      */
-    public function userRegister($username, $password, $email)
+    public function userRegister(UserDetails $userDetails)
     {
-        $params = $this->client->registerDetails($username, $password, $email);
-        $response = $this->client->request("POST", "user/register", $params);
+        $response = $this->client->request("POST", "user/register", $userDetails);
         return $this->getBodyContent($response);
     }
 
     /**
      * userLogin Login user.
-     * @param array $userCredentials contains username, password, appName and accessType.
+     * @param UserDetails $userDetails contains username, password, appName and accessType.
      * @return array Returns status of request.
      */
-    public function userLogin(array $userCredentials)
+    public function userLogin(UserDetails $userDetails)
     {
-        $response = $this->client->request("POST", "user/login", $userCredentials);
+        $response = $this->client->request("POST", "user/login", $userDetails);
         return $this->getBodyContent($response);
     }
 
@@ -164,12 +167,23 @@ class User extends AbstractClient
 
     /**
      * createForm Create a new form.
-     * @param
+     * @param array $formDetails
      * @return array Returns new form.
      */
     public function createForm(array $formDetails)
     {
-        $response = $this->client->request("POST", "user/forms");
+        $response = $this->client->request("POST", "user/forms", $formDetails);
+        return $this->getBodyContent($response);
+    }
+
+    /**
+     * createForm Create forms.
+     * @param array $formDetails
+     * @return array Returns new form.
+     */
+    public function createForms(array $formDetails)
+    {
+        $response = $this->client->request("PUT", "user/forms", $formDetails);
         return $this->getBodyContent($response);
     }
 }

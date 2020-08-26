@@ -18,11 +18,30 @@ use JotForm\Errors\NotFoundException;
 use JotForm\Errors\NotImplementedException;
 use JotForm\Errors\ServerException;
 use JotForm\Errors\ServiceUnavailableException;
+use JotForm\JotFormAPI\DateOptions\Action;
+use JotForm\JotFormAPI\DateOptions\Date;
+use JotForm\JotFormAPI\DateOptions\SortBy;
+use JotForm\JotFormAPI\DateOptions\StartDate;
+use JotForm\JotFormAPI\FilterOptions\Filter;
+use JotForm\JotFormAPI\FilterOptions\Limit;
+use JotForm\JotFormAPI\FilterOptions\Offset;
+use JotForm\JotFormAPI\FilterOptions\OrderBy;
 use JotForm\JotFormAPI\RequestHandler;
 
+/**
+ * Class JotForm
+ * @package JotForm
+ */
 class JotForm
 {
-    private static $baseURL;
+    /**
+     * @var string
+     */
+    private $baseURL;
+
+    /**
+     * @var RequestHandler
+     */
     private $requestHandler;
 
     /**
@@ -55,6 +74,11 @@ class JotForm
      */
     public $submissions;
 
+    /**
+     * JotForm constructor.
+     * @param RequestHandler $handler
+     * @param string $baseURL
+     */
     public function __construct(RequestHandler $handler, string $baseURL = "https://api.jotform.com")
     {
         $this->users = new User($this);
@@ -67,7 +91,12 @@ class JotForm
         $this->baseURL = $baseURL;
     }
 
-    public static function create($apiKey, $baseURL = "https://api.jotform.com")
+    /**
+     * @param string $apiKey
+     * @param string $baseURL
+     * @return JotForm
+     */
+    public static function create(string $apiKey, $baseURL = "https://api.jotform.com")
     {
         $client = new Client([
             "base_uri" => $baseURL,
@@ -78,22 +107,13 @@ class JotForm
         return new JotForm(new RequestHandler($client), $baseURL);
     }
 
-    public function registerDetails($username, $password, $email)
-    {
-        return $params = array($username, $password, $email);
-    }
-
-    public function historyDetail($action = null, $date = null, $sortBy = null, $startDate = null, $endDate = null)
-    {
-        return $params = array($action, $date, $sortBy, $startDate, $endDate);
-    }
-
-    public function filterOrder($offset = 0, $limit = 0, $orderBy = null, $filter = null)
-    {
-        return $params = array($offset, $limit, $orderBy, json_encode($filter));
-    }
-
-    public function request($requestType, $endpoint, $params = [])
+    /**
+     * @param string $requestType
+     * @param string $endpoint
+     * @param array $params
+     * @return array|bool|float|int|object|string|null
+     */
+    public function request(string $requestType, string $endpoint, $params = [])
     {
         $response = $this->requestHandler->executeHttpRequest($requestType, $endpoint, $params);
         $this->exceptionHandling($response);
@@ -101,6 +121,18 @@ class JotForm
         return \GuzzleHttp\json_decode($responseBody, true);
     }
 
+    /**
+     * @param $response
+     * @throws AuthorizationException
+     * @throws BadGatewayException
+     * @throws BadRequestException
+     * @throws DefaultException
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     * @throws NotImplementedException
+     * @throws ServerException
+     * @throws ServiceUnavailableException
+     */
     private function exceptionHandling($response)
     {
         $statusCode = $response->getStatusCode();

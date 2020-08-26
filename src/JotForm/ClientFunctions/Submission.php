@@ -2,11 +2,18 @@
 
 namespace JotForm\ClientFunctions;
 
+use JotForm\JotFormAPI\SubmissionDetails;
+
+/**
+ * Class Submission
+ * @package JotForm\ClientFunctions
+ */
+
 class Submission extends AbstractClient
 {
     /**
      * getSubmission Get submission details.
-     * @param [integer][$submissionId]
+     * @param integer $submissionId
      * @return array Returns content of the submission.
      */
     public function getSubmission($submissionId)
@@ -17,7 +24,7 @@ class Submission extends AbstractClient
 
     /**
      * deleteSubmission Delete a specific submission.
-     * @param [integer][$submissionId]
+     * @param integer $submissionId
      * @return array Returns status of the request.
      */
     public function deleteSubmission($submissionId)
@@ -28,12 +35,13 @@ class Submission extends AbstractClient
 
     /**
      * editSubmission Edit a specific submission.
-     * @param [integer][$submissionId]
+     * @param integer $submissionId
+     * @param array $submissionDetails
      * @return array Returns content of the submission.
      */
-    public function editSubmission($submissionId, array $submissionDetails)
+    public function editSubmission($submissionId, SubmissionDetails $submissionDetails)
     {
-        $response = $this->client->request("POST", "submission/{$submissionId}", $submissionDetails);
+        $response = $this->client->request("POST", "submission/{$submissionId}", $submissionDetails->toArray());
         return $this->getBodyContent($response);
     }
 }

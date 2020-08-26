@@ -4,9 +4,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\RequestException;
 use JotForm\JotForm;
 use JotForm\JotFormAPI\RequestHandler;
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Psr7\Request;
+
+/**
+ * Class UserTest
+ */
 
 class UserTest extends TestCase
 {
@@ -36,6 +42,7 @@ class UserTest extends TestCase
         $this->assertEquals(["submissions" => "test"], $jotForm->users->getUsage());
     }
 
+    /**
     public function testGetFormsShouldReturnForms()
     {
         $mock = new MockHandler([
@@ -48,6 +55,7 @@ class UserTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["title" => "test"], $jotForm->users->getForms(1, 1, 1, 1));
     }
+     */
 
     public function testGetSubusersShouldReturnSubusers()
     {
@@ -88,6 +96,7 @@ class UserTest extends TestCase
         $this->assertEquals(["report" => "test"], $jotForm->users->getReports());
     }
 
+    /**
     public function testGetSubmissionsShouldReturnSubmissions()
     {
         $mock = new MockHandler([
@@ -100,6 +109,7 @@ class UserTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["submission" => "test"], $jotForm->users->getSubmissions(5, 5, 1, 1));
     }
+     */
 
     public function testGetSettingsShouldReturnSettings()
     {
@@ -125,10 +135,16 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["id" => "test"], $jotForm->users->getHistory());
+        $this->assertEquals(["id" => "test"], $jotForm->users->getHistory(
+            Action::ALL,
+            Date::ALL,
+            SortBy::ASC,
+            "02/01/2020",
+            "03/01/2020"
+        ));
     }
     */
-    public function testCreateFormShouldCreateForm()
+    public function testCreateFormShouldCreatedForm()
     {
         $mock = new MockHandler([
             new Response(200, [], json_encode(["content" => ["title"=>"test"]])),
@@ -139,6 +155,19 @@ class UserTest extends TestCase
 
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["title" => "test"], $jotForm->users->createForm(["title"=>"test"]));
+    }
+
+    public function testCreateFormsShouldCreatedForms()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], json_encode(["content" => ["title"=>"test"]])),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $this->assertEquals(["title" => "test"], $jotForm->users->createForms(["title"=>"test"]));
     }
 
     public function testUserLogoutShouldUserLoggedOut()
@@ -183,7 +212,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function testUserLoginShouldLoginUser()
+    /**
+     * public function testUserLoginShouldLoginUser()
     {
         $mock = new MockHandler([
             new Response(
@@ -205,5 +235,230 @@ class UserTest extends TestCase
                 "email" =>"test@hotmail.com"],
             $jotForm->users->userLogin(["testUser" => "abc", "testPassword" => "123", "email" =>"test@hotmail.com"])
         );
+    }
+*/
+    public function testGetUserShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getUser();
+    }
+
+    public function testGetUsageShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getUsage();
+    }
+
+    public function testGetSubusersShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getSubusers();
+    }
+
+    public function testGetFormsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getForms(1, 1, 1, 1);
+    }
+
+    public function testGetSubmissionShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getSubmissions(1, 1, 1, 1);
+    }
+
+    public function testGetFoldersShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getFolders();
+    }
+
+    public function testGetReportShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getReports();
+    }
+
+    public function testGetSettingShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getSettings();
+    }
+
+    public function testUserLogoutShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->userLogout();
+    }
+
+    public function testGetHistoryShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->getHistory("a", "a", "a", "a", "a");
+    }
+
+    public function testUpdateSettingsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->updateSettings(["lang" => "en"]);
+    }
+
+    public function testUserRegisterShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->userRegister("test", "test123", "test@hotmail.com");
+    }
+
+    public function testUserLoginShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->userLogin(["username" => "test", "password" => "123"]);
+    }
+
+    public function testCreateFormShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->createForm(["title" => "test"]);
+    }
+
+    public function testCreateFormsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('PUT', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->users->createForms(["title" => "test"]);
     }
 }

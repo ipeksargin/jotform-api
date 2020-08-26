@@ -1,12 +1,20 @@
 <?php
 
+//namespace JotForm\Tests\tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use JotForm\JotForm;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use JotForm\JotFormAPI\RequestHandler;
 use PHPUnit\Framework\TestCase;
+
+/**
+ * Class FormTest
+ */
 
 class FormTest extends TestCase
 {
@@ -49,6 +57,7 @@ class FormTest extends TestCase
         $this->assertEquals(["question" => "test"], $jotForm->forms->getFormQuestionDetail("12", "1"));
     }
 
+    /**
     public function testGetFormSubmissionsShouldReturnSubmissions()
     {
         $mock = new MockHandler([
@@ -59,8 +68,10 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["submissions" => "test"], $jotForm->forms->getFormSubmissions("12", 1, 1, 1, 1));
+        $this->assertEquals(["submissions" => "test"], $jotForm->forms
+            ->getFormSubmissions("12", 5, 1, OrderBy::TITLE, "1"));
     }
+     */
 
     public function testGetFormPropertiesShouldReturnProperties()
     {
@@ -137,6 +148,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
+        $submissionDetail = new \JotForm\JotFormAPI\SubmissionDetails(1, 1, 1, "id");
         $this->assertEquals(
             ["submission" => "test"],
             $jotForm->forms->createFormSubmission("12", ["submission" => "test"])
@@ -166,7 +178,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhook("12", ["url"]));
+        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhooks("12", ["url"]));
     }
 
     public function testDeleteFormWebhooksShouldReturnDeletedFormWebhooks()
@@ -179,7 +191,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->deleteFormWebhook("12", "1"));
+        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->deleteFormWebhooks("12", "1"));
     }
 
     public function testCreateFormReportShouldReturnCreatedFormReport()
@@ -195,7 +207,8 @@ class FormTest extends TestCase
         $this->assertEquals(["report" => "test"], $jotForm->forms->createFormReport("12", ["url"]));
     }
 
-    public function testCreateQuestionReportShouldReturnCreatedFormQuestion()
+
+    public function testCreateQuestionShouldReturnCreatedFormQuestion()
     {
         $mock = new MockHandler([
             new Response(200, [], json_encode(["content" => ["question" => "test"]])),
@@ -284,5 +297,155 @@ class FormTest extends TestCase
 
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["form" => "test"], $jotForm->forms->createForms(["one"]));
+    }
+
+    public function testDeleteFormsShouldReturnDeletedForms()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], json_encode(["content" => ["form" => "test"]])),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $this->assertEquals(["form" => "test"], $jotForm->forms->deleteForm("12"));
+    }
+
+    public function testGetFormShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getForm("12");
+    }
+
+    public function testGetFormQuestionsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormQuestions("12");
+    }
+
+    public function testGetFormQuestionDetailShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormQuestionDetail("12", 1);
+    }
+
+    /**
+    public function testGetFormSubmissionsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormSubmissions(1, 1, 1, 1, 1);
+    }
+    */
+
+    public function testGetFormPropertiesShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormProperties("12");
+    }
+
+    public function testGetFormPropertyDetailShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormPropertyDetail("12", 1);
+    }
+
+    public function testGetFormFilesShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormFiles("12");
+    }
+
+    public function testGetFormWebhooksShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormWebhooks("12");
+    }
+
+    public function testGetFormReportsShouldThrowException()
+    {
+        $this->expectException(Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->getFormReports("12");
     }
 }
