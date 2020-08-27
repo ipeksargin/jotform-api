@@ -38,7 +38,6 @@ class SubmissionDetails extends Parameters
      */
     public function toArray()
     {
-        return $params = array("offset" => $this->offset, "limit" => $this->limit,
-            "filter" => json_encode($this->filter), "orderBy" => $this->orderBy);
+        return json_encode(get_object_vars($this));
     }
 }
