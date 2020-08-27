@@ -29,13 +29,6 @@ class SubmissionDetails extends Parameters
         }
     }
 
-    /**
-     * @param int $offset
-     * @param int $limit
-     * @param string|null $orderBy
-     * @param string|null $filter
-     * @return array
-     */
     public function toArray()
     {
         return json_encode(get_object_vars($this));
