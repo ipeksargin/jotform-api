@@ -2,9 +2,6 @@
 
 namespace JotForm\ClientFunctions;
 
-use JotForm\JotFormAPI\PropertyDetails;
-use JotForm\JotFormAPI\QuestionDetail;
-use JotForm\JotFormAPI\ReportDetails;
 use JotForm\JotFormAPI\SubmissionDetails;
 
 /**
@@ -170,9 +167,9 @@ class Form extends AbstractClient
      * @param array $reportDetails contains report details like title, list type etc.
      * @return array Returns report details and URL.
      */
-    public function createFormReport($formId, ReportDetails $reportDetails)
+    public function createFormReport($formId, array $reportDetails)
     {
-        $response = $this->client->request("POST", "form/{$formId}/reports", $reportDetails->toArray());
+        $response = $this->client->request("POST", "form/{$formId}/reports", $reportDetails);
         return $response["content"];
     }
 
@@ -182,9 +179,9 @@ class Form extends AbstractClient
      * @param array $questionDetail
      * @return array Returns properties of new question.
      */
-    public function createFormQuestion($formId, QuestionDetail $questionDetail)
+    public function createFormQuestion($formId, array $questionDetail)
     {
-        $response = $this->client->request("PUT", "form/{$formId}/questions", $questionDetail->toArray());
+        $response = $this->client->request("PUT", "form/{$formId}/questions", $questionDetail);
         return $response["content"];
     }
 
@@ -207,9 +204,9 @@ class Form extends AbstractClient
      * @param array $questionDetail contains question detail like text, name etc.
      * @return array Returns status of the request.
      */
-    public function editFromQuestion($formId, $questionId, QuestionDetail $questionDetail)
+    public function editFromQuestion($formId, $questionId, array $questionDetail)
     {
-        $response = $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail->toArray());
+        $response = $this->client->request("POST", "form/{$formId}/questions/$questionId", $questionDetail);
         return $response["content"];
     }
 
@@ -219,9 +216,9 @@ class Form extends AbstractClient
      * @param array $formProperties
      * @return array Returns edited properties.
      */
-    public function setFormProperties($formId, PropertyDetails $formProperties)
+    public function setFormProperties($formId, array $formProperties)
     {
-        $response = $this->client->request("POST", "form/{$formId}/properties", $formProperties->toArray());
+        $response = $this->client->request("POST", "form/{$formId}/properties", $formProperties);
         return $response["content"];
     }
 

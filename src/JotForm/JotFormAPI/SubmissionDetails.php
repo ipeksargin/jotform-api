@@ -4,7 +4,7 @@ namespace JotForm\JotFormAPI;
 
 use phpDocumentor\Parser\Exception;
 
-class SubmissionDetails
+class SubmissionDetails extends Parameters
 {
     private $offset;
     private $limit;
@@ -40,69 +40,5 @@ class SubmissionDetails
     {
         return $params = array("offset" => $this->offset, "limit" => $this->limit,
             "filter" => json_encode($this->filter), "orderBy" => $this->orderBy);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOffset()
-    {
-        return $this->offset;
-    }
-
-    /**
-     * @param mixed $offset
-     */
-    public function setOffset($offset): void
-    {
-        $this->offset = $offset;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    /**
-     * @param mixed $limit
-     */
-    public function setLimit($limit): void
-    {
-        $this->limit = $limit;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOrderBy()
-    {
-        return $this->orderBy;
-    }
-
-    /**
-     * @param mixed $orderBy
-     */
-    public function setOrderBy($orderBy): void
-    {
-        $this->orderBy = $orderBy;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFilter()
-    {
-        return $this->filter;
-    }
-
-    /**
-     * @param mixed $filter
-     */
-    public function setFilter($filter): void
-    {
-        $this->filter = $filter;
     }
 }

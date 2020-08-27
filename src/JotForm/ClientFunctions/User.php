@@ -2,10 +2,8 @@
 
 namespace JotForm\ClientFunctions;
 
-use JotForm\JotFormAPI\FormDetails;
 use JotForm\JotFormAPI\HistoryDetails;
 use JotForm\JotFormAPI\SubmissionDetails;
-use JotForm\JotFormAPI\UserDetails;
 
 /**
  * Class User
@@ -119,12 +117,8 @@ class User extends AbstractClient
     }
 
     /**
-     * getHistory Get user activity.
-     * @param $action
-     * @param $date
-     * @param $sortBy
-     * @param string $startDate
-     * @param string $endDate
+     * getHistory Get history for this account.
+     * @param HistoryDetails $historyDetails
      * @return array Returns updated settings.
      */
     public function getHistory(HistoryDetails $historyDetails)
@@ -135,21 +129,21 @@ class User extends AbstractClient
 
     /**
      * userRegister Register a new user.
-     * @param UserDetails $userDetails
+     * @param array $userDetails
      * @return array Returns new user's details.
      */
-    public function userRegister(UserDetails $userDetails)
+    public function userRegister(array $userDetails)
     {
         $response = $this->client->request("POST", "user/register", $userDetails);
         return $this->getBodyContent($response);
     }
 
     /**
-     * userLogin Login user.
-     * @param UserDetails $userDetails contains username, password, appName and accessType.
+     * userLogin User login.
+     * @param array $userDetails contains username, password, appName and accessType.
      * @return array Returns status of request.
      */
-    public function userLogin(UserDetails $userDetails)
+    public function userLogin(array $userDetails)
     {
         $response = $this->client->request("POST", "user/login", $userDetails);
         return $this->getBodyContent($response);

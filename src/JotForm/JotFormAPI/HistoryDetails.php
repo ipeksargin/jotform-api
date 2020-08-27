@@ -8,7 +8,7 @@ use phpDocumentor\Parser\Exception;
  * Class HistoryDetails
  * @package JotForm\JotFormAPI
  */
-class HistoryDetails
+class HistoryDetails extends Parameters
 {
     private $action;
     private $date;
@@ -63,86 +63,6 @@ class HistoryDetails
 
     public function toArray()
     {
-        return $params = array("action" => $this->action, "date"=>$this->date,
-            "sortBy" =>$this->sortBy, "startDate" => $this->startDate, "endDate" =>$this->endDate);
-    }
-    /**
-     * @return mixed
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
-     * @param mixed $action
-     */
-    public function setAction($action): void
-    {
-        $this->action = $action;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param mixed $date
-     */
-    public function setDate($date): void
-    {
-        $this->date = $date;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    /**
-     * @param mixed $startDate
-     */
-    public function setStartDate($startDate): void
-    {
-        $this->startDate = $startDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * @param mixed $endDate
-     */
-    public function setEndDate($endDate): void
-    {
-        $this->endDate = $endDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy): void
-    {
-        $this->sortBy = $sortBy;
+        return json_encode(get_object_vars($this));
     }
 }
