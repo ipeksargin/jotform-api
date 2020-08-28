@@ -60,9 +60,4 @@ class HistoryDetails extends Parameters
             throw new Exception("Invalid sortBy property Exception");
         }
     }
-
-    public function toArray()
-    {
-        return json_encode(get_object_vars($this));
-    }
 }

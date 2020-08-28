@@ -28,9 +28,4 @@ class SubmissionDetails extends Parameters
             throw new Exception("Invalid orderBy Exception");
         }
     }
-
-    public function toArray()
-    {
-        return json_encode(get_object_vars($this));
-    }
 }
