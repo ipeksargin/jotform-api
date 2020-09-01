@@ -1,6 +1,6 @@
 {
-    "name": "jotfrom/api",
-    "description": "jotform api php",
+    "name": "jotform-api",
+    "description": "JotForm PHP API",
     "type": "library",
     "authors": [
         {
