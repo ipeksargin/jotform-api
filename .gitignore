@@ -1,4 +1,6 @@
 /vendor/
 phpcs.phar
-composer.phar
 phpDocumentor.phar
+composer.phar
+.editorconfig
+api.md
