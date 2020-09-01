@@ -6,8 +6,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use JotForm\JotForm;
-use JotForm\JotFormAPI\RequestHandler;
 use GuzzleHttp\Exception\RequestException;
+use JotForm\RequestHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

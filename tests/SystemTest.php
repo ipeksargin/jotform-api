@@ -5,9 +5,9 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use JotForm\JotForm;
-use JotForm\JotFormAPI\RequestHandler;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use JotForm\RequestHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

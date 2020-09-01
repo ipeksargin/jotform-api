@@ -9,7 +9,7 @@ use GuzzleHttp\Psr7\Response;
 use JotForm\JotForm;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
-use JotForm\JotFormAPI\RequestHandler;
+use JotForm\RequestHandler;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -57,7 +57,7 @@ class FormTest extends TestCase
         $this->assertEquals(["question" => "test"], $jotForm->forms->getFormQuestionDetail("12", "1"));
     }
 
-    /**
+
     public function testGetFormSubmissionsShouldReturnSubmissions()
     {
         $mock = new MockHandler([
@@ -69,9 +69,9 @@ class FormTest extends TestCase
 
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["submissions" => "test"], $jotForm->forms
-            ->getFormSubmissions("12", 5, 1, OrderBy::TITLE, "1"));
+            ->getFormSubmissions("12", ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]));
     }
-     */
+
 
     public function testGetFormPropertiesShouldReturnProperties()
     {
@@ -148,7 +148,6 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $submissionDetail = new \JotForm\JotFormAPI\SubmissionDetails(1, 1, 1, "id");
         $this->assertEquals(
             ["submission" => "test"],
             $jotForm->forms->createFormSubmission("12", ["submission" => "test"])
@@ -178,7 +177,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhooks("12", ["url"]));
+        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhooks("12", "url"));
     }
 
     public function testDeleteFormWebhooksShouldReturnDeletedFormWebhooks()
@@ -218,7 +217,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["question" => "test"], $jotForm->forms->createFormQuestion("12", ["url"]));
+        $this->assertEquals(["question" => "test"], $jotForm->forms->createFormQuestion("12", ["question" => "one"]));
     }
 
     public function testDeleteFormQuestionShouldReturnDeletedFormQuestion()
@@ -357,7 +356,7 @@ class FormTest extends TestCase
         $jotForm->forms->getFormQuestionDetail("12", 1);
     }
 
-    /**
+
     public function testGetFormSubmissionsShouldThrowException()
     {
         $this->expectException(Exception::class);
@@ -370,9 +369,9 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->forms->getFormSubmissions(1, 1, 1, 1, 1);
+        $jotForm->forms->getFormSubmissions(1, ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
     }
-    */
+
 
     public function testGetFormPropertiesShouldThrowException()
     {
