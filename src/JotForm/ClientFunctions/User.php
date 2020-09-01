@@ -12,7 +12,7 @@ use JotForm\JotFormAPI\SubmissionDetails;
 class User extends AbstractClient
 {
     /**
-     * summary getUser Get user account details for this Jotform user.
+     * getUser Get user account details for this Jotform user.
      * @param
      * @return array Returns details like username, account type, email etc.
      */
@@ -46,10 +46,7 @@ class User extends AbstractClient
 
     /**
      * getForms Get list of forms for this user.
-     * @param integer $offset
-     * @param integer $limit
-     * @param string $orderBy
-     * @param string $filter
+     * @param SubmissionDetails array submissionDetails contains offset, limit, filter, orderby.
      * @return array Returns details like title, creation date etc.
      */
     public function getForms(SubmissionDetails $submissionDetails)
@@ -60,10 +57,7 @@ class User extends AbstractClient
 
     /**
      * getSubmissions Get list of submissions.
-     * @param integer $offset
-     * @param integer $limit
-     * @param string $orderBy
-     * @param string $filter
+     * @param SubmissionDetails array submissionDetails contains offset, limit, filter, orderby.
      * @return array Returns details like title, creation date etc.
      */
     public function getSubmissions(SubmissionDetails $submissionDetails)
