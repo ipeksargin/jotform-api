@@ -7,13 +7,13 @@ Offical JotForm PHP client library.
 ## Authentication
 
 ### User Access Token
-Create a client using JotForm account user access token.
+Create a client using JotForm account user access token. <br />
 ` $jotformUser  = JotForm::create("YOUR API KEY");` 
 
 ## Usage
 Client methods are divided in 6 resources. These resources are `forms`,` users`, `submissions`, `folders`,` systems` and `reports`. 
 
-Simple usage example to get the user information;
+Simple usage example to get the user information; <br />
 `$jotformUser->users->getUser();`
 
 ## Tests
