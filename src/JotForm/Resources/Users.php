@@ -43,18 +43,18 @@ class Users extends AbstractClient
 
     /**
      * getForms Get list of forms for this user.
-     * @param array submissionDetails contains offset, limit, filter, orderby.
+     * @param array formDetails contains offset, limit, filter, orderby etc.
      * @return array Returns details like title, creation date etc.
      */
-    public function getForms(array $submissionDetails)
+    public function getForms(array $formDetails)
     {
-        $response =  $this->client->request("GET", "user/forms", $submissionDetails);
+        $response =  $this->client->request("GET", "user/forms", $formDetails);
         return $this->getBodyContent($response);
     }
 
     /**
      * getSubmissions Get list of submissions.
-     * @param array submissionDetails contains offset, limit, filter, orderby.
+     * @param array submissionDetails contains offset, limit, filter, orderby etc.
      * @return array Returns details like title, creation date etc.
      */
     public function getSubmissions(array $submissionDetails)
@@ -120,7 +120,7 @@ class Users extends AbstractClient
 
     /**
      * userRegister Register a new user.
-     * @param array $userDetails
+     * @param array $userDetails contains username, password, email.
      * @return array Returns new user's details.
      */
     public function userRegister(array $userDetails)

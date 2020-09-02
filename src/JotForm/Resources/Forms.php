@@ -45,7 +45,7 @@ class Forms extends AbstractClient
     /**
      * createFormSubmission Create a single form submission using API.
      * @param integer $formId
-     * @param array $submissionDetails
+     * @param array $submissionDetails contains properties like offset, limit, filter, orderby etc.
      * @return array Returns details like submissionId and URL.
      */
     public function createFormSubmission($formId, array $submissionDetails)
@@ -57,7 +57,7 @@ class Forms extends AbstractClient
     /**
      * createFormSubmission Create form submissions using API.
      * @param integer $formId
-     * @param array $submissionDetails
+     * @param array $submissionDetails contains properties like offset, limit, filter, orderby etc.
      * @return array Returns details like submissionId and URL.
      */
     public function createFormSubmissions($formId, array $submissionDetails)
@@ -69,7 +69,7 @@ class Forms extends AbstractClient
     /**
      * getFormSubmission Get form submission.
      * @param integer $formId
-     * @param array $submissionDetails
+     * @param array $submissionDetails contains properties like offset, limit, filter, orderby etc.
      * @return array Returns details like submissionId and URL.
      */
     public function getFormSubmissions($formId, array $submissionDetails)
@@ -116,10 +116,10 @@ class Forms extends AbstractClient
      * createFormWebhook Create a new webhook in form.
      * @param integer
      * @param integer $formId
-     * @param string $webHookURL
+     * @param array $webHookURL
      * @return array Returns list of webhooks in form.
      */
-    public function createFormWebhooks($formId, string $webHookURL)
+    public function createFormWebhooks($formId, array $webHookURL)
     {
         $response = $this->client->request("POST", "form/{$formId}/webhooks", $webHookURL);
         return $response["content"];
@@ -174,7 +174,7 @@ class Forms extends AbstractClient
     /**
      * createFormQuestion Create a new question of a form.
      * @param integer $formId
-     * @param array $questionDetail
+     * @param array $questionDetail contains question detail like text, name etc.
      * @return array Returns properties of new question.
      */
     public function createFormQuestion($formId, array $questionDetail)
@@ -211,7 +211,7 @@ class Forms extends AbstractClient
     /**
      * setFormProperties Add or edit properties of a specific form.
      * @param integer $formId
-     * @param array $formProperties
+     * @param array $formProperties contains form properties.
      * @return array Returns edited properties.
      */
     public function setFormProperties($formId, array $formProperties)
@@ -222,7 +222,7 @@ class Forms extends AbstractClient
 
     /**
      * createForm Create a new form.
-     * @param array $formDetail
+     * @param array $formDetail contains form details.
      * @return array Returns new form.
      */
     public function createForm(array $formDetail)
@@ -233,7 +233,7 @@ class Forms extends AbstractClient
 
     /**
      * createForms Create multiple forms.
-     * @param array $formDetail
+     * @param array $formDetail contains forms details.
      * @return array Returns new forms.
      */
     public function createForms(array $formDetail)

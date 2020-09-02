@@ -4,3 +4,4 @@ phpDocumentor.phar
 composer.phar
 .editorconfig
 api.md
+/.idea/

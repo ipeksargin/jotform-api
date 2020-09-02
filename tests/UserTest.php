@@ -239,13 +239,12 @@ class UserTest extends TestCase
 
     public function testGetUserShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(BadRequestException::class);
 
         $mock = new MockHandler([
             new BadRequestException(
                 'Error Communicating with Server',
-                400,
-                new Request('GET', 'test')
+                400
             )
         ]);
 

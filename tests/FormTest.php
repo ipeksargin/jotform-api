@@ -177,7 +177,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhooks("12", "url"));
+        $this->assertEquals(["webhooks" => "test"], $jotForm->forms->createFormWebhooks("12", ["url" => "abc"]));
     }
 
     public function testDeleteFormWebhooksShouldReturnDeletedFormWebhooks()
