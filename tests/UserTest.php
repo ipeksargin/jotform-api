@@ -5,6 +5,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\RequestException;
+use JotForm\Errors\BadRequestException;
 use JotForm\JotForm;
 use JotForm\RequestHandler;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ class UserTest extends TestCase
         $this->assertEquals(["submissions" => "test"], $jotForm->users->getUsage());
     }
 
-    /**
+
     public function testGetFormsShouldReturnForms()
     {
         $mock = new MockHandler([
@@ -53,9 +54,9 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["title" => "test"], $jotForm->users->getForms(1, 1, 1, 1));
+        $this->assertEquals(["title" => "test"], $jotForm->users->getForms([]));
     }
-     */
+
 
     public function testGetSubusersShouldReturnSubusers()
     {
@@ -96,7 +97,7 @@ class UserTest extends TestCase
         $this->assertEquals(["report" => "test"], $jotForm->users->getReports());
     }
 
-    /**
+
     public function testGetSubmissionsShouldReturnSubmissions()
     {
         $mock = new MockHandler([
@@ -107,9 +108,12 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["submission" => "test"], $jotForm->users->getSubmissions(5, 5, 1, 1));
+        $this->assertEquals(
+            ["submission" => "test"],
+            $jotForm->users->getSubmissions(["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1])
+        );
     }
-     */
+
 
     public function testGetSettingsShouldReturnSettings()
     {
@@ -124,7 +128,7 @@ class UserTest extends TestCase
         $this->assertEquals(["website" => "test"], $jotForm->users->getSettings());
     }
 
-    /**
+
     public function testGetHistoryShouldReturnHistory()
     {
         $mock = new MockHandler([
@@ -135,15 +139,12 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["id" => "test"], $jotForm->users->getHistory(
-            Action::ALL,
-            Date::ALL,
-            SortBy::ASC,
-            "02/01/2020",
-            "03/01/2020"
-        ));
+        $this->assertEquals(
+            ["id" => "test"],
+            $jotForm->users->getHistory(["details"])
+        );
     }
-    */
+
     public function testCreateFormShouldCreatedForm()
     {
         $mock = new MockHandler([
@@ -208,12 +209,11 @@ class UserTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(
             ["testUser", "testPassword", "test@hotmail.com"],
-            $jotForm->users->userRegister("ipek", "ipek123", "ipek@hotmail.com")
+            $jotForm->users->userRegister(["username" => "ipek", "password" => "ipek123", "ipek@hotmail.com"])
         );
     }
 
-    /**
-     * public function testUserLoginShouldLoginUser()
+    public function testUserLoginShouldLoginUser()
     {
         $mock = new MockHandler([
             new Response(
@@ -236,13 +236,17 @@ class UserTest extends TestCase
             $jotForm->users->userLogin(["testUser" => "abc", "testPassword" => "123", "email" =>"test@hotmail.com"])
         );
     }
-*/
+
     public function testGetUserShouldThrowException()
     {
         $this->expectException(Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new BadRequestException(
+                'Error Communicating with Server',
+                400,
+                new Request('GET', 'test')
+            )
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -294,7 +298,7 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->users->getForms(1, 1, 1, 1);
+        $jotForm->users->getForms(["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
     }
 
     public function testGetSubmissionShouldThrowException()
@@ -309,7 +313,7 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->users->getSubmissions(1, 1, 1, 1);
+        $jotForm->users->getSubmissions(["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
     }
 
     public function testGetFoldersShouldThrowException()
@@ -384,7 +388,7 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->users->getHistory("a", "a", "a", "a", "a");
+        $jotForm->users->getHistory(["lang" => "en"]);
     }
 
     public function testUpdateSettingsShouldThrowException()
@@ -414,7 +418,7 @@ class UserTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->users->userRegister("test", "test123", "test@hotmail.com");
+        $jotForm->users->userRegister(["username" => "test", "password" => "123", "test@hotmail.com"]);
     }
 
     public function testUserLoginShouldThrowException()
