@@ -9,13 +9,14 @@
         }
     ],
     "require": {
+        "php" : "7.3.*",
         "guzzlehttp/guzzle": "^7.0",
         "ext-json": "*"
     },
     "autoload": {
-        "psr-0": {
-            "JotForm\\": "src/",
-            "JotForm\\Tests": "tests/"
+        "psr-4": {
+            "JotForm\\": "src/JotForm",
+            "JotForm\\Tests\\": "tests/"
         }
     },
     "require-dev": {
