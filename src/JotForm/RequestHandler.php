@@ -47,12 +47,13 @@ class RequestHandler
 
         if (!empty($params)) {
             if ($requestType === "GET") {
-                $options = ["query" => $params];
+                $options = ["query" => $params, 'debug' => true];
             } else {
-                $options = ["form_params" => $params];
+                $options = ["form_params" => $params, 'debug' => true];
             }
         }
 
+        $request = false;
         try {
             $request = $this->client->request($requestType, $url, $options);
         } catch (GuzzleException $e) {
@@ -63,7 +64,6 @@ class RequestHandler
     }
 
     /**
-     * @param $response
      * @throws AuthorizationException
      * @throws BadGatewayException
      * @throws BadRequestException
@@ -76,37 +76,35 @@ class RequestHandler
      */
     private function exceptionHandling($statusCode)
     {
-        if ($statusCode != 200) {
-            switch ($statusCode) {
-                case 400:
-                    throw new BadRequestException("Bad request.", $statusCode);
-                    break;
-                case 401:
-                    throw new AuthorizationException("Invalid API key or unauthorized API call.", $statusCode);
-                    break;
-                case 403:
-                    throw new ForbiddenException("Dont have access rights to the content.", $statusCode);
-                    break;
-                case 404:
-                    throw new NotFoundException("Not found the requested source.", $statusCode);
-                    break;
-                case 500:
-                    throw new ServerException("Internal server error.", $statusCode);
-                    break;
-                case 501:
-                    throw new NotImplementedException("Request method not supported.", $statusCode);
-                    break;
-                case 502:
-                    throw new BadGatewayException("Service is unavailable, rate limits etc exceeded!", $statusCode);
-                    break;
-                case 503:
-                    throw new ServiceUnavailableException("Service is unavailable or overloaded", $statusCode);
-                    break;
+        switch ($statusCode) {
+            case 400:
+                throw new BadRequestException("Bad request.", $statusCode);
+                break;
+            case 401:
+                throw new AuthorizationException("Invalid API key or unauthorized API call.", $statusCode);
+                break;
+            case 403:
+                throw new ForbiddenException("Dont have access rights to the content.", $statusCode);
+                break;
+            case 404:
+                throw new NotFoundException("Not found the requested source.", $statusCode);
+                break;
+            case 500:
+                throw new ServerException("Internal server error.", $statusCode);
+                break;
+            case 501:
+                throw new NotImplementedException("Request method not supported.", $statusCode);
+                break;
+            case 502:
+                throw new BadGatewayException("Service is unavailable, rate limits etc exceeded!", $statusCode);
+                break;
+            case 503:
+                throw new ServiceUnavailableException("Service is unavailable or overloaded", $statusCode);
+                break;
 
-                default:
-                    throw new DefaultException($statusCode);
-                    break;
-            }
+            default:
+                throw new DefaultException($statusCode);
+                break;
         }
     }
 }
