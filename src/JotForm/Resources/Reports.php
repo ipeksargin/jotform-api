@@ -15,7 +15,7 @@ class Reports extends AbstractClient
      */
     public function getReport($reportId)
     {
-        $response =  $this->client->request("GET", "/report/{$reportId}");
+        $response =  $this->client->request("GET", "report/{$reportId}");
         return $this->getBodyContent($response);
     }
 
