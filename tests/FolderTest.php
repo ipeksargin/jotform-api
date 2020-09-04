@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm\Tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -30,7 +32,7 @@ class FolderTest extends TestCase
 
     public function testGetFolderShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
             new RequestException("Error Communicating with Server", new Request("GET", "test"))

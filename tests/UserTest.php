@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm\Tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -8,7 +10,6 @@ use GuzzleHttp\Exception\RequestException;
 use JotForm\Errors\AuthorizationException;
 use JotForm\Errors\BadGatewayException;
 use JotForm\Errors\BadRequestException;
-use JotForm\Errors\DefaultException;
 use JotForm\Errors\ForbiddenException;
 use JotForm\Errors\NotFoundException;
 use JotForm\Errors\NotImplementedException;
@@ -51,7 +52,6 @@ class UserTest extends TestCase
         $this->assertEquals(["submissions" => "test"], $jotForm->users->getUsage());
     }
 
-
     public function testGetFormsShouldReturnForms()
     {
         $mock = new MockHandler([
@@ -64,7 +64,6 @@ class UserTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(["title" => "test"], $jotForm->users->getForms([]));
     }
-
 
     public function testGetSubusersShouldReturnSubusers()
     {
@@ -105,7 +104,6 @@ class UserTest extends TestCase
         $this->assertEquals(["report" => "test"], $jotForm->users->getReports());
     }
 
-
     public function testGetSubmissionsShouldReturnSubmissions()
     {
         $mock = new MockHandler([
@@ -121,7 +119,6 @@ class UserTest extends TestCase
             $jotForm->users->getSubmissions(["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1])
         );
     }
-
 
     public function testGetSettingsShouldReturnSettings()
     {
@@ -217,7 +214,7 @@ class UserTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $this->assertEquals(
             ["testUser", "testPassword", "test@hotmail.com"],
-            $jotForm->users->userRegister(["username" => "ipek", "password" => "ipek123", "ipek@hotmail.com"])
+            $jotForm->users->userRegister(["username" => "abc", "password" => "123", "abc@hotmail.com"])
         );
     }
 
@@ -367,10 +364,10 @@ class UserTest extends TestCase
 
     public function testGetUserShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -382,10 +379,10 @@ class UserTest extends TestCase
 
     public function testGetUsageShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -397,10 +394,10 @@ class UserTest extends TestCase
 
     public function testGetSubusersShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -412,10 +409,10 @@ class UserTest extends TestCase
 
     public function testGetFormsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -427,10 +424,10 @@ class UserTest extends TestCase
 
     public function testGetSubmissionShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -442,10 +439,10 @@ class UserTest extends TestCase
 
     public function testGetFoldersShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -457,10 +454,10 @@ class UserTest extends TestCase
 
     public function testGetReportShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -472,10 +469,10 @@ class UserTest extends TestCase
 
     public function testGetSettingShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -487,10 +484,10 @@ class UserTest extends TestCase
 
     public function testUserLogoutShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -502,10 +499,10 @@ class UserTest extends TestCase
 
     public function testGetHistoryShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -517,10 +514,10 @@ class UserTest extends TestCase
 
     public function testUpdateSettingsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -532,10 +529,10 @@ class UserTest extends TestCase
 
     public function testUserRegisterShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -547,10 +544,10 @@ class UserTest extends TestCase
 
     public function testUserLoginShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -562,10 +559,10 @@ class UserTest extends TestCase
 
     public function testCreateFormShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('POST', 'test'))
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -577,10 +574,10 @@ class UserTest extends TestCase
 
     public function testCreateFormsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('PUT', 'test'))
+            new RequestException("Error Communicating with Server", new Request("PUT", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);

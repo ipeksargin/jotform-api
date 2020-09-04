@@ -1,6 +1,6 @@
 <?php
 
-//namespace JotForm\Tests\tests;
+namespace JotForm\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -230,7 +230,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["question" => "test"], $jotForm->forms->deleteFormQuestion("12", 1));
+        $this->assertEquals(["question" => "test"], $jotForm->forms->deleteFormQuestion("12", "1"));
     }
 
     public function testEditFormQuestionShouldReturnEditedFormQuestion()
@@ -243,7 +243,7 @@ class FormTest extends TestCase
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $this->assertEquals(["question" => "test"], $jotForm->forms->editFromQuestion("12", 1, ["details"]));
+        $this->assertEquals(["question" => "test"], $jotForm->forms->editFromQuestion("12", "1", ["details"]));
     }
 
     public function testSetFormPropertiesShouldReturnProperties()
@@ -313,10 +313,10 @@ class FormTest extends TestCase
 
     public function testGetFormShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -328,10 +328,10 @@ class FormTest extends TestCase
 
     public function testGetFormQuestionsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -343,10 +343,10 @@ class FormTest extends TestCase
 
     public function testGetFormQuestionDetailShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -359,26 +359,26 @@ class FormTest extends TestCase
 
     public function testGetFormSubmissionsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(["handler" => $handlerStack]);
 
         $jotForm = new JotForm(new RequestHandler($client));
-        $jotForm->forms->getFormSubmissions(1, ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
+        $jotForm->forms->getFormSubmissions("1", ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
     }
 
 
     public function testGetFormPropertiesShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -390,10 +390,10 @@ class FormTest extends TestCase
 
     public function testGetFormPropertyDetailShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -405,10 +405,10 @@ class FormTest extends TestCase
 
     public function testGetFormFilesShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -420,10 +420,10 @@ class FormTest extends TestCase
 
     public function testGetFormWebhooksShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -435,10 +435,10 @@ class FormTest extends TestCase
 
     public function testGetFormReportsShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -447,4 +447,201 @@ class FormTest extends TestCase
         $jotForm = new JotForm(new RequestHandler($client));
         $jotForm->forms->getFormReports("12");
     }
+
+    public function testCreateFormSubmissionShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createFormSubmission("1", ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
+    }
+
+    public function testCreateFormSubmissionsShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createFormSubmissions("1", ["offset" => 1, "limit" => 1,"filter" => 1,"orderby" => 1]);
+    }
+
+    public function testCreateFormWebhooksShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createFormWebhooks("1", ["url"]);
+    }
+
+    public function testDeleteFormWebhooksShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("DELETE", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->deleteFormWebhooks("1", "1");
+    }
+
+    public function testCreateFormReportShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createFormReport("1", ["title" => "report title"]);
+    }
+
+    public function testCreateFormQuestionShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createFormQuestion("1", ["text" => "question text"]);
+    }
+
+    public function testDeleteFormQuestionShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("DELETE", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->deleteFormQuestion("1", "1");
+    }
+
+    public function testEditFormQuestionShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->editFromQuestion("1", "1", ["text" => "new text"]);
+    }
+
+    public function testSetFormPropertiesShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->setFormProperties("1", ["properties" => "form properties"]);
+    }
+
+    public function testCreateFormShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createForm(["form details" => "form details"]);
+    }
+
+    public function testCreateFormsShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("PUT", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->createForms(["form details" => "form details"]);
+    }
+
+    public function testCloneFormShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("POST", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->cloneForm("1");
+    }
+
+    public function testDeleteFormShouldThrowException()
+    {
+        $this->expectException(\Exception::class);
+
+        $mock = new MockHandler([
+            new RequestException("Error Communicating with Server", new Request("DELETE", "test"))
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(["handler" => $handlerStack]);
+
+        $jotForm = new JotForm(new RequestHandler($client));
+        $jotForm->forms->deleteForm("1");
+    }
+
+
 }

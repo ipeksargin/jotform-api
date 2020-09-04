@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm\Tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -30,10 +32,10 @@ class SystemTest extends TestCase
 
     public function testGetSystemPlanShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);

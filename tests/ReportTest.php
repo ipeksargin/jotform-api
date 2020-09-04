@@ -1,5 +1,7 @@
 <?php
 
+namespace JotForm\Tests;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -42,10 +44,10 @@ class ReportTest extends TestCase
 
     public function testGetReportShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('GET', 'test'))
+            new RequestException("Error Communicating with Server", new Request("GET", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
@@ -57,10 +59,10 @@ class ReportTest extends TestCase
 
     public function testDeleteReportShouldThrowException()
     {
-        $this->expectException(Exception::class);
+        $this->expectException(\Exception::class);
 
         $mock = new MockHandler([
-            new RequestException('Error Communicating with Server', new Request('DELETE', 'test'))
+            new RequestException("Error Communicating with Server", new Request("DELETE", "test"))
         ]);
 
         $handlerStack = HandlerStack::create($mock);
