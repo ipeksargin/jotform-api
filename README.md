@@ -50,9 +50,10 @@ Type the id of the submission you want to edit as a first parameter. Then, you m
 new submission details.<br />
 
 ```php
+$formDetails = ["title" => "form title"];
 $jotForm->forms->createForm("formDetails");
 ``` 
-You must provide an array as a parameter, including form details.
+To create a form, you must provide form details including title, name etc as an array.
 
 ## Tests
 After running `composer install`, run the test by using following:
