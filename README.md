@@ -5,6 +5,7 @@ JotForm PHP client library.
 ## Installation 
 
 ### Composer
+Download the repository by using `git clone` or GUI. 
 
 ## Authentication
 
